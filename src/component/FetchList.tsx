@@ -1,28 +1,32 @@
-// type FetchedList = Array<any>
+import { ReactElement } from "react"
+import Loading from './Loading';
+import { List } from '@mui/material'
 
-// type Props = {
-//     fetchedList: FetchedList,
-//     error: any,
-//     isLoading: any
-// }
 
-// const FetchList = ({ fetchedList, error, isLoading }: Props) => {
+type Props = {
+    fetchedList: Array<any>,
+    error: any,
+    isLoading: any,
+    mapFunction: (value: any, index: number, array: any[]) => ReactElement
+}
+
+const FetchList = ({ fetchedList, error, isLoading, mapFunction }: Props) => {
     
-//     if (isLoading) {
-//         return <div>loading</div>
-//     }
+    if (isLoading) {
+        return <Loading/>
+    }
 
-//     return (  
-//         (error || !fetchedList)
-//         ?
-//         <div>error</div>
-//         :
-//         fetchedList.map((elem) => 
-//             <ListItemButton key={elem.domain}>
-//                 <Link href={`/domain/${elem.domain}`}>{elem.domain}</Link> 
-//             </ListItemButton>
-//         )
-//     );
-// }
+    return ( 
+            error
+            ?
+            <div>error</div>
+            :
+            <List>
+                {
+                    fetchedList.map(mapFunction)
+                }
+            </List>
+     );
+}
  
-// export default FetchList;
+export default FetchList;

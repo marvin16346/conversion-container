@@ -2,30 +2,22 @@ import { useDomain } from '@/data/domain'
 import { List, ListItem, ListItemButton } from '@mui/material'
 import Link from 'next/link';
 import Loading from './Loading';
+import FetchList from './FetchList';
 
 
 const Domain = () => {
     const { domains, error, isLoading }  = useDomain();
 
-    if (isLoading) {
-        return <Loading/>
-    }
-
-    return ( 
-        <List>
-          {
-            (error || !domains)
-            ?
-            <div>error</div>
-            :
-            domains.map((elem) => 
-              <ListItemButton key={elem.domain}>
+    return FetchList({
+        fetchedList: domains, 
+        error,
+        isLoading,
+        mapFunction: (elem) => (
+            <ListItemButton key={elem.domain}>
                 <Link href={`/domain/${elem.domain}`}>{elem.domain}</Link> 
-              </ListItemButton>
-            )
-          }
-        </List>
-     );
+            </ListItemButton>
+        )
+    });
 }
  
 export default Domain;
