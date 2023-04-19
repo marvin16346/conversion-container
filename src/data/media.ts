@@ -16,7 +16,7 @@ export function useMedia() {
     const { data, error, isLoading }: Swr = useSWR("/api/media");
     
     return {
-        media: data,
+        media: data || [],
         isLoading,
         error
     }

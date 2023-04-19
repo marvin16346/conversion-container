@@ -16,7 +16,7 @@ export function useDomain() {
     const { data, error, isLoading }: Swr = useSWR("/api/domain");
     
     return {
-        domains: data,
+        domains: data || [],
         isLoading,
         error
     }
