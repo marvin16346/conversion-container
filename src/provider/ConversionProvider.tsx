@@ -1,3 +1,4 @@
+import { Conversion } from "@/data/conversion";
 import { Event } from "@/data/event";
 import { Media } from "@/data/media";
 import { Trigger } from "@/data/trigger";
@@ -8,11 +9,6 @@ type Props = {
     children :ReactElement
 };
 
-type Conversion = {
-    media: Media | null,
-    event: Event | null,
-    trigger: Trigger | null
-}
 
 type AllConversion = {
     allConversion: Conversion[],
