@@ -1,10 +1,10 @@
 import useSWR from 'swr';
 
-export type Media = {
+export type Trigger = {
     name: string
 }
 
-type Data = Array<Media>
+type Data = Array<Trigger>
 
 type Swr = {
     data: Data | undefined,
@@ -12,11 +12,11 @@ type Swr = {
     isLoading: boolean
 }
 
-export function useMedia() {
-    const { data, error, isLoading }: Swr = useSWR("/api/media");
+export function useTrigger() {
+    const { data, error, isLoading }: Swr = useSWR("/api/trigger");
     
     return {
-        medias: data || [],
+        triggers: data || [],
         isLoading,
         error
     }
