@@ -12,12 +12,19 @@ type Props = {
 
 type AllConversion = {
     allConversion: Conversion[],
-    pushToAllConversion: (elem: Conversion) => void,
-    removeInAllConversion: (elem: Conversion) => void
+    pushToAllConversion: (elem: MemoryConversion) => void,
+    removeInAllConversion: (elem: Conversion) => void,
+    setAllConversion: (conversions: Conversion[]) => void,
+}
+
+export type MemoryConversion = {
+    media: Media | null,
+    event: Event | null,
+    trigger: Trigger | null
 }
 
 type MakingConversion = {
-    makingConversion: Conversion,
+    makingConversion: MemoryConversion,
     setMedia: (elem: Media) => void,
     setEvent: (elem: Event) => void,
     setTrigger: (elem: Trigger) => void,
@@ -38,12 +45,13 @@ export const MakingConversionContext =  createContext<MakingConversion>({
 
 export const AllConversionContext =  createContext<AllConversion>({
     allConversion: [],
-    pushToAllConversion: (elem: Conversion) => {},
-    removeInAllConversion: (elem: Conversion) => {}
+    pushToAllConversion: (elem: MemoryConversion) => {},
+    removeInAllConversion: (elem: Conversion) => {},
+    setAllConversion: (conversions: Conversion[]) => {},
 });
 
 const ConversionProvider = ({ children }: Props) => {
-    const [makingConversion, setMakingConversion] = useState<Conversion>({
+    const [makingConversion, setMakingConversion] = useState<MemoryConversion>({
         media: null,
         event: null,
         trigger: null
@@ -66,8 +74,18 @@ const ConversionProvider = ({ children }: Props) => {
         }}>
             <AllConversionContext.Provider value={{
                 allConversion,
-                pushToAllConversion: (elem) => setAllConversion(allConversion.concat([elem])),
-                removeInAllConversion: (elem) => setAllConversion(allConversion.filter(elem2 => JSON.stringify(elem2) != JSON.stringify(elem.name)))
+                pushToAllConversion: async (elem) => {
+                    const response = await fetch('/api/conversion', {
+                        method: 'POST',
+                        body: JSON.stringify(elem)
+                    });
+                    const newConversion = await response.json();
+                    setAllConversion(allConversion.concat(newConversion));
+                },
+                removeInAllConversion: (elem) => setAllConversion(
+                    allConversion.filter(elem2 => JSON.stringify(elem2) != JSON.stringify(elem))
+                ),
+                setAllConversion
             }}>
                 {children}
             </AllConversionContext.Provider>

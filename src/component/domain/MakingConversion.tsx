@@ -44,7 +44,7 @@ const MakingConversion = () => {
                         variant="contained"
                         onClick={
                             () => {
-
+                                pushToAllConversion(makingConversion);
                             }
                         }
                     >

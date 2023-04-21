@@ -5,6 +5,7 @@ import { Trigger } from "@/data/trigger";
 
 
 export type Conversion = {
+    id: number | null,
     media: Media | null,
     event: Event | null,
     trigger: Trigger | null
