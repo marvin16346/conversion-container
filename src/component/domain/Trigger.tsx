@@ -1,6 +1,6 @@
 import { ListItemButton } from '@mui/material'
 import { useTrigger } from "@/data/trigger";
-import FetchList from "@/component/FetchList";
+import FetchList from "@/component/common/FetchList";
 import { useContext } from 'react';
 import { MakingConversionContext } from "@/provider/ConversionProvider"
 

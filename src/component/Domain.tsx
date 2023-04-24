@@ -1,7 +1,7 @@
 import { useDomain } from '@/data/domain'
 import { ListItemButton } from '@mui/material'
 import Link from 'next/link';
-import FetchList from '@/component/FetchList';
+import FetchList from '@/component/common/FetchList';
 
 
 const Domain = () => {
