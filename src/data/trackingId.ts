@@ -9,7 +9,8 @@ type Data = Array<TrackingId>
 type Swr = {
     data: Data | undefined,
     error: any,
-    isLoading: boolean
+    isLoading: boolean,
+    mutate: Function,
 }
 
 type Props = {
@@ -19,11 +20,12 @@ type Props = {
 }
 
 export function useTrackingId({ domain, version, media }: Props) {
-    const { data, error, isLoading }: Swr = useSWR(`/api/trackingId?domain=${domain}&version=${version}&media=${media}`);
+    const { data, mutate, error, isLoading }: Swr = useSWR(`/api/trackingId?domain=${domain}&version=${version}&media=${media}`);
     
     return {
         trackingIds: data || [],
         isLoading,
-        error
+        error,
+        mutate
     }
 }

@@ -3,6 +3,7 @@ import useSWR from 'swr';
 export type Media = {
     name: string,
     using: boolean,
+    commonScript: string
 }
 
 type Data = Array<Media>

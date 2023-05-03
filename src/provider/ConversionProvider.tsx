@@ -1,7 +1,6 @@
 import { Conversion } from "@/data/conversion";
 import { Event } from "@/data/event";
 import { Media } from "@/data/media";
-import { Trigger } from "@/data/trigger";
 import { ReactElement, useState } from "react";
 import { createContext } from "react";
 
@@ -20,14 +19,12 @@ type AllConversion = {
 export type MemoryConversion = {
     media: Media | null,
     event: Event | null,
-    trigger: Trigger | null
 }
 
 type MakingConversion = {
     makingConversion: MemoryConversion,
     setMedia: (elem: Media) => void,
     setEvent: (elem: Event) => void,
-    setTrigger: (elem: Trigger) => void,
     isAllSet: () => boolean,
 }
 
@@ -35,11 +32,9 @@ export const MakingConversionContext =  createContext<MakingConversion>({
     makingConversion: {
         media: null,
         event: null,
-        trigger: null
     },
     setMedia: (elem: Media) => {},
     setEvent: (elem: Event) => {},
-    setTrigger: (elem: Trigger) => {},
     isAllSet: () => { return false; }
 });
 
@@ -54,7 +49,6 @@ const ConversionProvider = ({ children }: Props) => {
     const [makingConversion, setMakingConversion] = useState<MemoryConversion>({
         media: null,
         event: null,
-        trigger: null
     });
     const [allConversion, setAllConversion] = useState<Conversion[]>([]);
 
@@ -64,9 +58,8 @@ const ConversionProvider = ({ children }: Props) => {
             makingConversion,
             setMedia: (elem: Media) => {setMakingConversion({...makingConversion, media: elem, event: null})},
             setEvent: (elem: Event) => {setMakingConversion({...makingConversion, event: elem}); },
-            setTrigger: (elem: Trigger) => {setMakingConversion({...makingConversion, trigger: elem})},
             isAllSet: () => {
-                if (makingConversion.media && makingConversion.event && makingConversion.trigger) {
+                if (makingConversion.media && makingConversion.event) {
                     return true;
                 }
                 return false;

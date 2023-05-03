@@ -4,7 +4,11 @@ import 'prismjs/components/prism-jsx.min';
 import { useEffect, useState } from 'react';
 import { Stack, Box, Grid, TextareaAutosize } from '@mui/material';
 
-const SyntaxEditor = () => {
+type Props = {
+    text?: string | undefined
+}
+
+const SyntaxEditor = ({ text }: Props) => {
     const [code, setCode] = useState<string>('');
 
     useEffect(() => {
@@ -12,13 +16,19 @@ const SyntaxEditor = () => {
       return () => {
       }
     }, [code]);
+
+    useEffect(() => {
+        if (!!text) {
+            document.getElementById("code-input").value = text;
+            setCode(text);
+        }
+      return () => {
+      }
+    }, [text]);
+    
     
     function onCodeChange(evt) {
-        console.log(evt);
         setCode(evt.target.value);
-        console.log(evt.target.value);
-        console.log(code);
-        
     }
 
     function onTabDown(evt) {

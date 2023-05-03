@@ -8,6 +8,9 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
 import MediaEditDialog from '../MediaEditDialog';
+import defaultAxios from '@/axios/axios';
+import { useSWRConfig } from 'swr';
+import { useRouter } from 'next/router';
 
 type Props = {
     domain: string
@@ -18,6 +21,9 @@ const Media = ({ domain }: Props) => {
     const { makingConversion, setMedia } = useContext(MakingConversionContext);
     const [open, setOpen] = useState<boolean>(false);
     const [selectedMedia, setSelectedMedia] = useState<Media|null>(null);
+    const {mutate} = useSWRConfig();
+    const router = useRouter();
+    const { version } = router.query;
 
     return ( 
         <Box>
@@ -39,11 +45,17 @@ const Media = ({ domain }: Props) => {
             {
                 selectedMedia &&
                 <MediaEditDialog
-                    domain={domain}
                     media={selectedMedia}
                     open={open}
                     onClose={() => setOpen(false)}
-                    onSubmit={() => {}}
+                    onSubmit={async () => {
+                        const res = await defaultAxios.post('/api/trackingId', {
+                            name:  document.getElementById("additional-tracking-id")?.innerText
+                        });
+                        if (res.status == 200) {
+                            mutate(`/api/trackingId?domain=${domain}&version=${version}&media=${selectedMedia.name}`);
+                        }
+                    }}
                 />
             }
 

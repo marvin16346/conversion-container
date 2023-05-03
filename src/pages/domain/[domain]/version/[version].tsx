@@ -1,18 +1,11 @@
 import { useRouter } from "next/router";
 import Typography from '@mui/material/Typography'
-import { Box, Divider, Grid, Stack, ButtonGroup, Button } from "@mui/material";
-import Media from "@/component/domain/unit/Media";
+import { Box, Divider, Grid, IconButton, Stack } from "@mui/material";
 import ConversionProvider from "@/provider/ConversionProvider";
-import Event from "@/component/domain/unit/Event";
-import Trigger from "@/component/domain/unit/Trigger";
 import MakingConversion from "@/component/domain/MakingConversion";
-import AllConversion from "@/component/domain/AllConversion";
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import axios from "axios";
-import defaultAxios from "@/axios/axios";
-import SyntaxEditor from "@/component/common/SyntaxEditor";
 import EditBox from "@/component/domain/EditBox";
-
+import MediaPanel from '@/component/domain/panel/MediaPanel';
+import EventPanel from '@/component/domain/panel/EventPanel';
 
 const VersionManager = () => {
     const router = useRouter();
@@ -25,7 +18,6 @@ const VersionManager = () => {
                 <Typography variant="h4" color="initial">{version}</Typography>
             </Box>
 
-            <SyntaxEditor></SyntaxEditor>
 {/* 
             <Box>
                 <TextareaAutosize
@@ -67,20 +59,10 @@ const VersionManager = () => {
                         spacing={4}
                     >
                         {/* 매체 */}
-                        <Grid item xs={6}>
-                            <Typography variant="h4" color="initial">매체</Typography>
-                            <Divider color="gray"/>
-                            <Media
-                                domain={domain as string}
-                            />
-                        </Grid>
+                        <MediaPanel/>
 
                         {/* 이벤트 */}
-                        <Grid item xs={6}>
-                            <Typography variant="h4" color="initial">이벤트</Typography>
-                            <Divider color="gray"/>
-                            <Event/>
-                        </Grid>
+                        <EventPanel/>
 
                         {/* <Grid item xs={4}>
                             <Typography variant="h4" color="initial">트리거</Typography>

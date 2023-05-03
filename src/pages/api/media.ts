@@ -8,5 +8,10 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json([{ name: 'naver', using: true }, { name: 'kakao', using: false }]);
+  res.status(200).json([
+    { name: 'naver', using: true, commonScript: '' },
+    { name: 'kakao', using: false, 
+      commonScript: '<script src="//t1.daumcdn.net/adfit/static/kp.js"></script>' 
+    }
+  ]);
 }

@@ -1,19 +1,21 @@
-import { Item, Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemButton, ListItemText, TextareaAutosize, Typography, Button, Stack, TextField } from "@mui/material";
+import {  Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemButton, ListItemText, TextareaAutosize, Typography, Button, Stack, TextField } from "@mui/material";
 import TrackingId from "@/component/domain/unit/TrackingId";
 import { Media } from "@/data/media";
 import { useState } from "react";
 import SyntaxEditor from "../common/SyntaxEditor";
+import { useRouter } from "next/router";
 
 type Props = {
-    domain: string
     media: Media,
     open: boolean,
     onClose: Function,
     onSubmit: Function
 }
 
-const MediaEditDialog = ({ domain, media, open, onClose, onSubmit }: Props) => {
+const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
     // const [open, setOpen] = useState<boolean>(false);
+    const router = useRouter();
+    const { domain, version } = router.query;    
 
     return ( 
         <Dialog onClose={onClose} open={open}>
@@ -29,7 +31,9 @@ const MediaEditDialog = ({ domain, media, open, onClose, onSubmit }: Props) => {
                         <Typography variant="h5">
                             공통 유틸리티 스크립트
                         </Typography>
-                        <SyntaxEditor/>
+                        <SyntaxEditor
+                            text={media.commonScript}
+                        />
                         {/* <TextareaAutosize
                             className="textarea-code"
                         /> */}
@@ -42,17 +46,22 @@ const MediaEditDialog = ({ domain, media, open, onClose, onSubmit }: Props) => {
                         {/* version + media */}
                         <TrackingId 
                             domain={domain}
+                            version={version}
+                            media={media.name}
                         />
                         <Stack direction={'row'} >
                             <TextField
                                 id="more-tracking-id"
-                                label="추가할 트래킹 id"
+                                label="트래킹 id"
                                 sx={{
                                     flexGrow: 1
                                 }}
                                 onChange={() => {}}
                             />
-                            <Button variant="outlined">
+                            <Button 
+                                variant="outlined"
+                                onClick={onSubmit}
+                            >
                                 추가
                             </Button>
                         </Stack>
@@ -61,10 +70,15 @@ const MediaEditDialog = ({ domain, media, open, onClose, onSubmit }: Props) => {
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button variant="contained">
+                <Button 
+                    variant="contained"
+                    onClick={onClose}    
+                >
                     취소
                 </Button>
-                <Button variant="contained">
+                <Button 
+                    variant="contained"
+                >
                     저장
                 </Button>
             </DialogActions>
