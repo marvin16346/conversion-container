@@ -83,6 +83,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  height: 100vh;
 }
 
 body {
@@ -99,6 +100,26 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.textarea-code {
+  width: 100%;
+  padding: 1em;
+  margin: 0.5em 0;
+  /* color: #ccc; */
+  background: none;
+  font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  font-size: 1em;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.5;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  -webkit-hyphens: none;
+  hyphens: none;
+}                 
 
 @media (prefers-color-scheme: dark) {
   html {

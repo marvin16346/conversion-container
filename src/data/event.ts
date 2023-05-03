@@ -1,7 +1,9 @@
 import useSWR from 'swr';
 
 export type Event = {
-    name: string
+    name: string,
+    regUrl: string,
+    eventListener: string,
 }
 
 type Data = Array<Event>

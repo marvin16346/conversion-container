@@ -1,7 +1,8 @@
 import useSWR from 'swr';
 
 export type Media = {
-    name: string
+    name: string,
+    using: boolean,
 }
 
 type Data = Array<Media>
@@ -12,8 +13,8 @@ type Swr = {
     isLoading: boolean
 }
 
-export function useMedia() {
-    const { data, error, isLoading }: Swr = useSWR("/api/media");
+export function useMedia(domain: string) {
+    const { data, error, isLoading }: Swr = useSWR(`/api/media?domain=${domain}`);
     
     return {
         medias: data || [],
