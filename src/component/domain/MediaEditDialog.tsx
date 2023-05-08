@@ -33,6 +33,7 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                         </Typography>
                         <SyntaxEditor
                             text={media.commonScript}
+                            keyString="media-editor"
                         />
                         {/* <TextareaAutosize
                             className="textarea-code"

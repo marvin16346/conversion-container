@@ -56,7 +56,9 @@ const MakingConversion = () => {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <SyntaxEditor/>
+                            <SyntaxEditor
+                                keyString="conversion-editor"
+                            />
                         </Grid>
 
                     </Grid>
