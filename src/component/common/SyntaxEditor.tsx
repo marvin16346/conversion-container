@@ -14,7 +14,6 @@ const SyntaxEditor = ({ text, keyString }: Props) => {
     const [code, setCode] = useState<string>('');
 
     useEffect(() => {
-        console.log('key', keyString)
       Prism.highlightAll();
       return () => {
       }

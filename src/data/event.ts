@@ -14,8 +14,8 @@ type Swr = {
     isLoading: boolean
 }
 
-export function useEvent(media: string | undefined) {
-    const { data, error, isLoading }: Swr = useSWR(media ? `/api/event?media=${media}` : null);
+export function useEvent() {
+    const { data, error, isLoading }: Swr = useSWR(`/api/event`);
     
     return {
         events: data || [],

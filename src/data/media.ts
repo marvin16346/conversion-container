@@ -3,7 +3,8 @@ import useSWR from 'swr';
 export type Media = {
     name: string,
     using: boolean,
-    commonScript: string
+    commonScript: string,
+    trackingList: Array<string>
 }
 
 type Data = Array<Media>
@@ -11,7 +12,7 @@ type Data = Array<Media>
 type Swr = {
     data: Data | undefined,
     error: any,
-    isLoading: boolean
+    isLoading: boolean,
 }
 
 export function useMedia(domain: string) {
@@ -20,6 +21,6 @@ export function useMedia(domain: string) {
     return {
         medias: data || [],
         isLoading,
-        error
+        error,
     }
 }

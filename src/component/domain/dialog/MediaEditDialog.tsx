@@ -2,7 +2,7 @@ import {  Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Li
 import TrackingId from "@/component/domain/unit/TrackingId";
 import { Media } from "@/data/media";
 import { useState } from "react";
-import SyntaxEditor from "../common/SyntaxEditor";
+import SyntaxEditor from "../../common/SyntaxEditor";
 import { useRouter } from "next/router";
 
 type Props = {
@@ -35,20 +35,16 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                             text={media.commonScript}
                             keyString="media-editor"
                         />
-                        {/* <TextareaAutosize
-                            className="textarea-code"
-                        /> */}
                     </Box>
 
                     <Box>
                         <Typography variant="h5">
                             트래킹 ID 리스트
                         </Typography>
-                        {/* version + media */}
                         <TrackingId 
                             domain={domain}
                             version={version}
-                            media={media.name}
+                            media={media}
                         />
                         <Stack direction={'row'} >
                             <TextField

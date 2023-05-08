@@ -9,13 +9,16 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-    switch (req.query['media']) {
-        case "naver":
-            res.status(200).json([{ name: '장바구니 보기' }, { name: '페이지뷰' }]);
-            break;
-        case "kakao":
-            res.status(200).json([{ name: '구매 전환' }, { name: '유튜브 뷰' }]);
-        default:
-            break;
-    }
+    res.status(200).json([
+        { 
+            name: '장바구니 보기',
+            eventListener: '',
+            regUrl: ''
+        }, 
+        { 
+            name: '페이지뷰',
+            eventListener: '',
+            regUrl: ''
+        }
+    ]);
 }

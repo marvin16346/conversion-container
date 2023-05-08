@@ -7,7 +7,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
-import MediaEditDialog from '../MediaEditDialog';
+import MediaEditDialog from '../dialog/MediaEditDialog';
 import defaultAxios from '@/axios/axios';
 import { useSWRConfig } from 'swr';
 import { useRouter } from 'next/router';
@@ -96,9 +96,33 @@ const Media = ({ domain }: Props) => {
                                     {
                                         elem.using
                                         ?
-                                        <RemoveCircleIcon/>
+                                        <RemoveCircleIcon
+                                            onClick={async () => {
+                                                const res = await defaultAxios.put(
+                                                    "/api/media",
+                                                    {
+                                                        using: true
+                                                    }
+                                                );
+                                                if (res.status == 200) {
+                                                    mutate(`/api/media?domain=${domain}`);
+                                                }
+                                            }}
+                                        />
                                         :
-                                        <AddCircleIcon/>
+                                        <AddCircleIcon
+                                            onClick={async () => {
+                                                const res = await defaultAxios.put(
+                                                    "/api/media",
+                                                    {
+                                                        using: false
+                                                    }
+                                                );
+                                                if (res.status == 200) {
+                                                    mutate(`/api/media?domain=${domain}`);
+                                                }
+                                            }}
+                                        />
                                     }
                                 </IconButton>
                             </>

@@ -56,7 +56,7 @@ const ConversionProvider = ({ children }: Props) => {
     return (
         <MakingConversionContext.Provider value={{
             makingConversion,
-            setMedia: (elem: Media) => {setMakingConversion({...makingConversion, media: elem, event: null})},
+            setMedia: (elem: Media) => {setMakingConversion({...makingConversion, media: elem})},
             setEvent: (elem: Event) => {setMakingConversion({...makingConversion, event: elem}); },
             isAllSet: () => {
                 if (makingConversion.media && makingConversion.event) {
