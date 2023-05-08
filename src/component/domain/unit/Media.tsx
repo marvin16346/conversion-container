@@ -11,6 +11,7 @@ import MediaEditDialog from '../MediaEditDialog';
 import defaultAxios from '@/axios/axios';
 import { useSWRConfig } from 'swr';
 import { useRouter } from 'next/router';
+import EditIcon from '@mui/icons-material/Edit';
 
 type Props = {
     domain: string
@@ -73,30 +74,42 @@ const Media = ({ domain }: Props) => {
                     <ListItem
                         key={elem.name}
                         secondaryAction={
-                            <IconButton 
-                                edge="end" 
-                                aria-label="add" 
-                                onClick={(evt) => {
-                                    evt.stopPropagation();
-                                }}
-                            >
-                                {
-                                    elem.using
-                                    ?
-                                    <RemoveCircleIcon/>
-                                    :
-                                    <AddCircleIcon/>
-                                }
-                            </IconButton>
+                            <>
+                                <IconButton 
+                                    edge="end" 
+                                    aria-label="add" 
+                                    onClick={(evt) => {
+                                        evt.stopPropagation();
+                                        setSelectedMedia(elem);
+                                        setOpen(true);
+                                    }}
+                                >
+                                    <EditIcon/>
+                                </IconButton>
+                                <IconButton 
+                                    edge="end" 
+                                    aria-label="add" 
+                                    onClick={(evt) => {
+                                        evt.stopPropagation();
+                                    }}
+                                >
+                                    {
+                                        elem.using
+                                        ?
+                                        <RemoveCircleIcon/>
+                                        :
+                                        <AddCircleIcon/>
+                                    }
+                                </IconButton>
+                            </>
                         }
-                        onClick={() => {
-                            setSelectedMedia(elem);
-                            setOpen(true);
-                        }}
                     >
-                        <ListItemButton key={elem.name} onClick={() => {
-                            setMedia(elem);
-                        }}>
+                        <ListItemButton 
+                            key={elem.name} 
+                            onClick={() => {
+                                setMedia(elem);
+                            }}
+                        >
                             <ListItemIcon>
                                 {
                                     elem.using
