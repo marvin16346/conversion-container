@@ -15,7 +15,7 @@ type Swr = {
 }
 
 export function useEvent() {
-    const { data, error, isLoading }: Swr = useSWR(`/api/event`);
+    const { data, error, isLoading }: Swr = useSWR(`/event`);
     
     return {
         events: data || [],

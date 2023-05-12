@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import Typography from '@mui/material/Typography'
-import { Box, Divider, Grid, IconButton, Stack } from "@mui/material";
+import { Box, Divider, Grid, IconButton, Stack, Button } from "@mui/material";
 import ConversionProvider from "@/provider/ConversionProvider";
 import MakingConversion from "@/component/domain/MakingConversion";
 import MediaPanel from '@/component/domain/panel/MediaPanel';
@@ -12,9 +12,24 @@ const VersionManager = () => {
 
     return ( 
         <Box>
-            <Box p={8}>
-                <Typography variant="h3" color="initial">{domain}</Typography>
-                <Typography variant="h4" color="initial">{version}</Typography>
+            <Box p={10}>
+                <Grid 
+                    container 
+                    spacing={2}
+                    direction="row"    
+                    // justifyContent="space-around"
+                    // textAlign="center"
+                >
+                    <Grid item xs={8}>
+                        <Typography variant="h3" color="initial">{domain}</Typography>
+                        <Typography variant="h6" color="initial">{version}</Typography>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Button variant="contained" >
+                            배포하기 
+                        </Button>
+                    </Grid>
+                </Grid>
             </Box>
 
             <ConversionProvider>

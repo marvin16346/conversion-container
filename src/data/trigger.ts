@@ -13,7 +13,7 @@ type Swr = {
 }
 
 export function useTrigger() {
-    const { data, error, isLoading }: Swr = useSWR("/api/trigger");
+    const { data, error, isLoading }: Swr = useSWR("/trigger");
     
     return {
         triggers: data || [],

@@ -27,7 +27,7 @@ type Props = {
 }
 
 export function useConversion({ domain, event, media } : Props) {
-    const { data, error, isLoading, mutate }: Swr = useSWR(`/api/conversion?domain=${domain}&media=${media}&event=${event}`);
+    const { data, error, isLoading, mutate }: Swr = useSWR(`/conversion?domain=${domain}&media=${media}&event=${event}`);
     
     return {
         conversion: data || makeConversion(),

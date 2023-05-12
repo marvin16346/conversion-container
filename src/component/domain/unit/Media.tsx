@@ -65,11 +65,11 @@ const Media = ({ domain }: Props) => {
                     open={open}
                     onClose={() => setOpen(false)}
                     onSubmit={async () => {
-                        const res = await defaultAxios.post('/api/trackingId', {
+                        const res = await defaultAxios.post('/trackingId', {
                             name:  document.getElementById("additional-tracking-id")?.innerText
                         });
                         if (res.status == 200) {
-                            mutate(`/api/trackingId?domain=${domain}&version=${version}&media=${selectedMedia.name}`);
+                            mutate(`/trackingId?domain=${domain}&version=${version}&media=${selectedMedia.name}`);
                         }
                     }}
                 />
@@ -111,13 +111,13 @@ const Media = ({ domain }: Props) => {
                                         <RemoveCircleIcon
                                             onClick={async () => {
                                                 const res = await defaultAxios.put(
-                                                    "/api/media",
+                                                    "/media",
                                                     {
                                                         using: true
                                                     }
                                                 );
                                                 if (res.status == 200) {
-                                                    mutate(`/api/media?domain=${domain}`);
+                                                    mutate(`/media?domain=${domain}`);
                                                 }
                                             }}
                                         />
@@ -125,13 +125,13 @@ const Media = ({ domain }: Props) => {
                                         <AddCircleIcon
                                             onClick={async () => {
                                                 const res = await defaultAxios.put(
-                                                    "/api/media",
+                                                    "/media",
                                                     {
                                                         using: false
                                                     }
                                                 );
                                                 if (res.status == 200) {
-                                                    mutate(`/api/media?domain=${domain}`);
+                                                    mutate(`/media?domain=${domain}`);
                                                 }
                                             }}
                                         />

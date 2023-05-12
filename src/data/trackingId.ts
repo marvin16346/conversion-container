@@ -20,7 +20,7 @@ type Props = {
 }
 
 export function useTrackingId({ domain, version, media }: Props) {
-    const { data, mutate, error, isLoading }: Swr = useSWR(`/api/trackingId?domain=${domain}&version=${version}&media=${media}`);
+    const { data, mutate, error, isLoading }: Swr = useSWR(`/trackingId?domain=${domain}&version=${version}&media=${media}`);
     
     return {
         trackingIds: data || [],

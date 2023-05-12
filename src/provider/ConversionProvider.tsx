@@ -75,7 +75,7 @@ const ConversionProvider = ({ children }: Props) => {
             },
             saveConversion: async (triggerKey: string, executionCode: string) => {
                 return await defaultAxios.post(
-                    "/api/conversion", 
+                    "/conversion", 
                     {
                         ...makingConversion,
                         triggerKey,
@@ -87,7 +87,7 @@ const ConversionProvider = ({ children }: Props) => {
             {/* <AllConversionContext.Provider value={{
                 allConversion,
                 pushToAllConversion: async (elem) => {
-                    const response = await fetch('/api/conversion', {
+                    const response = await fetch('/conversion', {
                         method: 'POST',
                         body: JSON.stringify(elem)
                     });

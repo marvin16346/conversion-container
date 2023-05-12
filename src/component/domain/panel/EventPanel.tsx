@@ -34,11 +34,11 @@ const EventPanel = () => {
                 open={open}
                 onClose={() => setOpen(false)}
                 onSubmit={async () => {
-                    // const res = await defaultAxios.post('/api/trackingId', {
+                    // const res = await defaultAxios.post('/trackingId', {
                     //     name:  document.getElementById("additional-tracking-id")?.innerText
                     // });
                     // if (res.status == 200) {
-                    //     mutate(`/api/trackingId?domain=${domain}&version=${version}&media=${selectedMedia.name}`);
+                    //     mutate(`/trackingId?domain=${domain}&version=${version}&media=${selectedMedia.name}`);
                     // }
                 }}
             />

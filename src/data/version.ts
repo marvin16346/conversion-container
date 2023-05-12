@@ -13,7 +13,7 @@ type Swr = {
 }
 
 export function useVersionByDomain(domain: string | undefined) {
-    const { data, error, isLoading }: Swr = useSWR(domain ? `/api/version?domain=${domain}` : null);
+    const { data, error, isLoading }: Swr = useSWR(domain ? `/version?domain=${domain}` : null);
     
     return {
         versions: data || [],

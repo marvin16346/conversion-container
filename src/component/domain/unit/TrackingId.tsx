@@ -40,7 +40,7 @@ const TrackingId = ({ domain, version, media }: Props) => {
                                         let nextTrackingList = trackingList.filter(
                                             (original) => original != trackingId
                                         );
-                                        const res = await defaultAxios.put(`/api/media?domain=${domain}`,
+                                        const res = await defaultAxios.put(`/media?domain=${domain}`,
                                             {
                                                 media: {
                                                     ...media,
@@ -49,7 +49,7 @@ const TrackingId = ({ domain, version, media }: Props) => {
                                             }
                                         );
                                         if (res.status == 200) {
-                                            // mutate(`/api/media?domain=${domain}`);
+                                            // mutate(`/media?domain=${domain}`);
                                             setTrackingList(nextTrackingList);
                                         }
                                     }}

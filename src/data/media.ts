@@ -16,7 +16,7 @@ type Swr = {
 }
 
 export function useMedia(domain: string) {
-    const { data, error, isLoading }: Swr = useSWR(`/api/media?domain=${domain}`);
+    const { data, error, isLoading }: Swr = useSWR(`/media?domain=${domain}`);
     
     return {
         medias: data || [],
