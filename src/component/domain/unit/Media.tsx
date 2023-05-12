@@ -1,7 +1,7 @@
 import { Box, ListItemButton, TextField, Autocomplete, ListItem, IconButton, ListItemIcon } from '@mui/material'
 import FetchList from '@/component/common/FetchList';
 import { useMedia, Media } from '@/data/media';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MakingConversionContext } from "@/provider/ConversionProvider"
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
@@ -12,34 +12,49 @@ import defaultAxios from '@/axios/axios';
 import { useSWRConfig } from 'swr';
 import { useRouter } from 'next/router';
 import EditIcon from '@mui/icons-material/Edit';
+import AutoCompleteForList from '@/component/common/AutoCompleteForList';
 
 type Props = {
     domain: string
 }
+
+interface ExtendedMedia extends Media {
+    label: string
+} 
 
 const Media = ({ domain }: Props) => {
     const { medias, error, isLoading }  = useMedia(domain);
     const { makingConversion, setMedia } = useContext(MakingConversionContext);
     const [open, setOpen] = useState<boolean>(false);
     const [selectedMedia, setSelectedMedia] = useState<Media|null>(null);
+    const [showingMedias, setShowingMedias] = useState<Array<ExtendedMedia>>([]);
+    const [allMedias, setAllMedias] = useState<Array<ExtendedMedia>>([]);
+    
     const {mutate} = useSWRConfig();
     const router = useRouter();
     const { version } = router.query;
 
+
+    useEffect(() => {
+        setAllMedias(
+            medias.map((media) => ({
+                ...media,
+                label: media.name
+            }))
+        );
+    
+      return () => {
+      }
+    }, [medias]);
+    
+
     return ( 
         <Box>
-            {medias && 
-            
-            <Autocomplete
-                disablePortal
-                id="demo"
-                options={
-                    medias.map((media) => ({
-                        ...media,
-                        label: media.name
-                    }))
-                }
-                renderInput={(params) => <TextField {...params}  />}
+            {allMedias && 
+            <AutoCompleteForList
+                allItems={allMedias}
+                showingItems={showingMedias}
+                setShowing={setShowingMedias}
             />
             }
 
@@ -64,10 +79,7 @@ const Media = ({ domain }: Props) => {
 
             {
             FetchList({
-                fetchedList: medias.map((media) => ({
-                    ...media,
-                    label: media.name
-                })), 
+                fetchedList: showingMedias, 
                 error,
                 isLoading,
                 mapFunction: (elem) => (

@@ -1,8 +1,8 @@
 import { Autocomplete, Box, IconButton, ListItem, ListItemButton, ListItemIcon, TextField } from '@mui/material'
 import FetchList from '@/component/common/FetchList';
-import { useContext, useState, version } from "react";
+import { useContext, useEffect, useState, version } from "react";
 import { MakingConversionContext } from "@/provider/ConversionProvider"
-import { useEvent } from "@/data/event";
+import { useEvent, Event } from "@/data/event";
 import defaultAxios from '@/axios/axios';
 import { mutate } from 'swr';
 import EventEditDialog from '../dialog/EventEditDialog';
@@ -11,28 +11,40 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
+import AutoCompleteForList from '@/component/common/AutoCompleteForList';
+
+interface ExtendedEvent extends Event {
+    label: string
+}
 
 const Event = () => {
     const { makingConversion, setEvent } = useContext(MakingConversionContext);
     const { events, error, isLoading } = useEvent();
     const [selectedEvent, setSelectedEvent] = useState<Event|null>(null);
     const [open, setOpen] = useState<boolean>(false);
+    const [allEvents, setAllEvents] = useState<Array<ExtendedEvent>>([]);
+    const [showingEvents, setShowingEvents] = useState<Array<ExtendedEvent>>([]);
+
+    useEffect(() => {
+        setAllEvents(
+            events.map((event) => ({
+                ...event,
+                label: event.name
+            }))
+        );
+    
+      return () => {
+      }
+    }, [events]);
 
 
     return (
         <Box>
             {events && 
-            
-            <Autocomplete
-                disablePortal
-                id="demo"
-                options={
-                    events.map((event) => ({
-                        ...event,
-                        label: event.name
-                    }))
-                }
-                renderInput={(params) => <TextField {...params}  />}
+            <AutoCompleteForList
+                allItems={allEvents}
+                showingItems={showingEvents}
+                setShowing={setShowingEvents}
             />
             }
 
@@ -57,10 +69,7 @@ const Event = () => {
 
             {
             FetchList({
-                fetchedList: events.map((event) => ({
-                    ...event,
-                    label: event.name
-                })), 
+                fetchedList: showingEvents, 
                 error,
                 isLoading,
                 mapFunction: (elem) => (
