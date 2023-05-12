@@ -3,6 +3,7 @@ import domain from "@/pages/api/domain";
 import media from "@/pages/api/media";
 import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, Button, DialogActions } from "@mui/material";
 import { version } from "react";
+import { Event } from "@/data/event";
 
 type Props = {
     event: Event,
@@ -17,12 +18,28 @@ const EventEditDialog = ({ event, open, onClose, onSubmit }: Props) => {
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
                 <Typography variant="h4">
-                    {event.name} 설정
+                    이벤트 설정
                 </Typography>
             </DialogTitle>
 
-            <DialogContent>
+            <DialogContent
+                sx={{
+                    paddingTop: "20px !important"
+                }}
+            >
                 <Stack spacing={8}>
+                    <Box>
+                        <TextField
+                            id="event-name"
+                            label="이벤트명"
+                            sx={{
+                                flexGrow: 1
+                            }}
+                            defaultValue={event.name}
+                           
+                        />
+                    </Box>
+
                     <Box>
                         <Typography variant="h5">
                             이벤트 등록 함수

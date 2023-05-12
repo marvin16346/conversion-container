@@ -1,12 +1,11 @@
 import { useContext } from 'react';
-import { MakingConversionContext, AllConversionContext } from "@/provider/ConversionProvider"
+import { MakingConversionContext } from "@/provider/ConversionProvider"
 import { Box, Button, Container, Grid, Typography, TextField } from '@mui/material';
-import SyntaxEditor from '../common/SyntaxEditor';
+import Conversion from './unit/Conversion';
 
 
 const MakingConversion = () => {
     const { makingConversion, isAllSet } = useContext(MakingConversionContext);
-    const { pushToAllConversion } = useContext(AllConversionContext);
 
     return ( 
         <Box>
@@ -31,60 +30,11 @@ const MakingConversion = () => {
             {
                 isAllSet() 
                 &&
-                <>
-                    <Grid 
-                        container
-                        justifyContent="space-around"
-                        textAlign="center"
-                        spacing={4}
-                        direction="row"
-                    >
-                        <Grid item xs={6}>
-                            <Typography variant="h6" color="initial">key</Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography variant="h6" color="initial">호출할 함수</Typography>
-                        </Grid>
-
-                        <Grid item xs={6}>
-                            <TextField
-                              id="trigger-key"
-                              label="trigger 함수의 key"
-                              sx={{
-                                width: "100%"
-                              }}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <SyntaxEditor
-                                keyString="conversion-editor"
-                            />
-                        </Grid>
-
-                    </Grid>
-
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center'
-                        }}
-                    >
-                        <Button 
-                            variant="contained"
-                            onClick={
-                                () => {
-                                    pushToAllConversion(makingConversion);
-                                }
-                            }
-                            
-                        >
-                            저장하기
-                        </Button>
-                    </Box>
-                </>
+                <Conversion/>
             }
         </Box>
     );
 }
  
 export default MakingConversion;
+

@@ -1,30 +1,45 @@
 import useSWR from 'swr';
-import { Event } from "@/data/event";
-import { Media } from "@/data/media";
-import { Trigger } from "@/data/trigger";
+// import { Event } from "@/data/event";
+// import { Media } from "@/data/media";
 
 
 export type Conversion = {
-    id: number | null,
-    media: Media | null,
-    event: Event | null,
-    trigger: Trigger | null
+    // id: number | null,
+    // media: Media | null,
+    // event: Event | null,
+    triggerKey: string | null,
+    executionCode: string | null,
 }
 
-type Data = Array<Conversion>
+type Data = Conversion;
 
 type Swr = {
     data: Data | undefined,
     error: any,
-    isLoading: boolean
+    isLoading: boolean,
+    mutate: Function
 }
 
-export function useConversion() {
-    const { data, error, isLoading }: Swr = useSWR("/api/conversion");
+type Props = {
+    domain: string,
+    event: string,
+    media: string    
+}
+
+export function useConversion({ domain, event, media } : Props) {
+    const { data, error, isLoading, mutate }: Swr = useSWR(`/api/conversion?domain=${domain}&media=${media}&event=${event}`);
     
     return {
-        conversions: data || [],
+        conversion: data || makeConversion(),
         isLoading,
-        error
+        error,
+        mutate
+    }
+}
+
+export function makeConversion(): Conversion {
+    return {
+        triggerKey: "",
+        executionCode: ""
     }
 }

@@ -1,3 +1,4 @@
+import defaultAxios from "@/axios/axios";
 import { Conversion } from "@/data/conversion";
 import { Event } from "@/data/event";
 import { Media } from "@/data/media";
@@ -9,16 +10,18 @@ type Props = {
 };
 
 
-type AllConversion = {
-    allConversion: Conversion[],
-    pushToAllConversion: (elem: MemoryConversion) => void,
-    removeInAllConversion: (elem: Conversion) => void,
-    setAllConversion: (conversions: Conversion[]) => void,
-}
+// type AllConversion = {
+//     allConversion: Conversion[],
+//     pushToAllConversion: (elem: MemoryConversion) => void,
+//     removeInAllConversion: (elem: Conversion) => void,
+//     setAllConversion: (conversions: Conversion[]) => void,
+// }
 
 export type MemoryConversion = {
     media: Media | null,
     event: Event | null,
+    // triggerKey: string | null,
+    // executionCode: string | null,
 }
 
 type MakingConversion = {
@@ -26,31 +29,37 @@ type MakingConversion = {
     setMedia: (elem: Media) => void,
     setEvent: (elem: Event) => void,
     isAllSet: () => boolean,
+    saveConversion: (triggerKey: string, executionCode: string) => void
 }
 
 export const MakingConversionContext =  createContext<MakingConversion>({
     makingConversion: {
         media: null,
         event: null,
+        // triggerKey: null,
+        // executionCode: null,
     },
     setMedia: (elem: Media) => {},
     setEvent: (elem: Event) => {},
-    isAllSet: () => { return false; }
+    isAllSet: () => { return false; },
+    saveConversion: (triggerKey: string, executionCode: string) => {}
 });
 
-export const AllConversionContext =  createContext<AllConversion>({
-    allConversion: [],
-    pushToAllConversion: (elem: MemoryConversion) => {},
-    removeInAllConversion: (elem: Conversion) => {},
-    setAllConversion: (conversions: Conversion[]) => {},
-});
+// export const AllConversionContext =  createContext<AllConversion>({
+//     allConversion: [],
+//     pushToAllConversion: (elem: MemoryConversion) => {},
+//     removeInAllConversion: (elem: Conversion) => {},
+//     setAllConversion: (conversions: Conversion[]) => {},
+// });
 
 const ConversionProvider = ({ children }: Props) => {
     const [makingConversion, setMakingConversion] = useState<MemoryConversion>({
         media: null,
         event: null,
+        // triggerKey: null,
+        // executionCode: null,
     });
-    const [allConversion, setAllConversion] = useState<Conversion[]>([]);
+    // const [allConversion, setAllConversion] = useState<Conversion[]>([]);
 
 
     return (
@@ -63,9 +72,19 @@ const ConversionProvider = ({ children }: Props) => {
                     return true;
                 }
                 return false;
+            },
+            saveConversion: async (triggerKey: string, executionCode: string) => {
+                return await defaultAxios.post(
+                    "/api/conversion", 
+                    {
+                        ...makingConversion,
+                        triggerKey,
+                        executionCode
+                    }
+                )
             }
         }}>
-            <AllConversionContext.Provider value={{
+            {/* <AllConversionContext.Provider value={{
                 allConversion,
                 pushToAllConversion: async (elem) => {
                     const response = await fetch('/api/conversion', {
@@ -79,9 +98,9 @@ const ConversionProvider = ({ children }: Props) => {
                     allConversion.filter(elem2 => JSON.stringify(elem2) != JSON.stringify(elem))
                 ),
                 setAllConversion
-            }}>
+            }}> */}
                 {children}
-            </AllConversionContext.Provider>
+            {/* </AllConversionContext.Provider> */}
         </MakingConversionContext.Provider>    
     );
 };

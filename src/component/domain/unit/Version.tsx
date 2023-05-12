@@ -8,7 +8,6 @@ const Version = () => {
     const router = useRouter();
     const { domain } = router.query;
 
-    console.log('domain', domain)
     const { versions, error, isLoading } = useVersionByDomain(domain as string | undefined);
 
 

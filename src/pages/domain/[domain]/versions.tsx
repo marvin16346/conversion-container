@@ -1,4 +1,4 @@
-import Version from "@/component/domain/Version";
+import Version from "@/component/domain/unit/Version";
 
 const versions = () => {
 

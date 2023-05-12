@@ -23,3 +23,11 @@ export function useEvent() {
         error
     }
 }
+
+export function makeEvent(): Event {
+    return {
+        name: "",
+        regUrl: "",
+        eventListener: ""
+    }
+}

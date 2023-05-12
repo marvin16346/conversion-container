@@ -6,7 +6,7 @@ import { Stack, Box, Grid, TextareaAutosize } from '@mui/material';
 import React from 'react';
 
 type Props = {
-    text?: string,
+    text?: String,
     keyString: string
 }
 
@@ -19,40 +19,31 @@ const SyntaxEditor = ({ text, keyString }: Props) => {
       }
     }, [code]);
 
+
     useEffect(() => {
-        if (!!text) {
-            document.getElementById(`${keyString}-code-input`).value = text;
-            setCode(text);
+        setCode(text?.valueOf());
+        return () => {
         }
-      return () => {
-        setCode("");
-      }
     }, [text]);
     
-    
-    function onCodeChange(evt) {
-        setCode(evt.target.value);
-    }
-
     function onTabDown(evt) {
         if (evt.key == "Tab") {
             evt.preventDefault();
-            let codeInput = document.getElementById(`${keyString}-code-input`);
-            codeInput.value = codeInput.value.concat("    ");
+            setCode(code + "    ");
         }
     }
     
     return ( 
-        <Grid container spacing={2}
-            // key = {key}
-        >
+        <Grid container spacing={2}>
             <Grid item xs={6}>
                 <div>
                     <TextareaAutosize 
                         className='textarea-code'
-                        onKeyUp={onCodeChange} 
+                        // onKeyUp={onCodeChange} 
                         onKeyDown={onTabDown} 
                         id={`${keyString}-code-input`} 
+                        value={code}
+                        onChange={(evt) => setCode(evt.target.value)}
                     />
                 </div>
             </Grid>

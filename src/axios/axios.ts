@@ -2,6 +2,9 @@ import axios from 'axios';
 
 const defaultAxios = axios.create({
     baseURL: '',
+    headers: {
+        "Content-Type": "application/json",
+    } 
 });
 
 defaultAxios.interceptors.request.use((config) => {
