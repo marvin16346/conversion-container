@@ -98,45 +98,47 @@ const Media = ({ domain }: Props) => {
                                 >
                                     <EditIcon/>
                                 </IconButton>
-                                <IconButton 
-                                    edge="end" 
-                                    aria-label="add" 
-                                    onClick={(evt) => {
-                                        evt.stopPropagation();
-                                    }}
-                                >
-                                    {
-                                        elem.using
-                                        ?
-                                        <RemoveCircleIcon
-                                            onClick={async () => {
-                                                const res = await defaultAxios.put(
-                                                    "/media",
-                                                    {
-                                                        using: true
-                                                    }
-                                                );
-                                                if (res.status == 200) {
-                                                    mutate(`/media?domain=${domain}`);
+                                {
+                                    elem.using
+                                    ?
+                                    <IconButton 
+                                        edge="end" 
+                                        aria-label="add" 
+                                        onClick={async (evt) => {
+                                            evt.stopPropagation();
+                                            const res = await defaultAxios.put(
+                                                "/media",
+                                                {
+                                                    using: true
                                                 }
-                                            }}
-                                        />
-                                        :
-                                        <AddCircleIcon
-                                            onClick={async () => {
-                                                const res = await defaultAxios.put(
-                                                    "/media",
-                                                    {
-                                                        using: false
-                                                    }
-                                                );
-                                                if (res.status == 200) {
-                                                    mutate(`/media?domain=${domain}`);
+                                            );
+                                            if (res.status == 200) {
+                                                mutate(`/media?domain=${domain}`);
+                                            }
+                                        }}
+                                    >
+                                        <RemoveCircleIcon/>
+                                    </IconButton>
+                                    :
+                                    <IconButton 
+                                        edge="end" 
+                                        aria-label="add" 
+                                        onClick={async (evt) => {
+                                            evt.stopPropagation();
+                                            const res = await defaultAxios.put(
+                                                "/media",
+                                                {
+                                                    using: false
                                                 }
-                                            }}
-                                        />
-                                    }
-                                </IconButton>
+                                            );
+                                            if (res.status == 200) {
+                                                mutate(`/media?domain=${domain}`);
+                                            }
+                                        }}
+                                    >
+                                        <AddCircleIcon/>
+                                    </IconButton>
+                                }
                             </>
                         }
                     >

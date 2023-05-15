@@ -13,7 +13,7 @@ type Swr = {
 }
 
 export function useDomain() {
-    /* api 추가해달라. 응답 형태 좀 맞춰 달라. url에 id 넣어도 되나? */
+    // const { data, error, isLoading }: Swr = useSWR("/container/list?user_id=1");
     const { data, error, isLoading }: Swr = useSWR("/domain");
     
     return {
