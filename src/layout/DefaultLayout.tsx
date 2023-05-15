@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
+import Link from 'next/link';
 
 interface Props {
     children: ReactElement
@@ -21,11 +22,13 @@ const DefaultLayout: FC<Props> = ({ children }) => {
             </Head>
 
             <AppBar position="sticky" color="primary" component="nav">
-              <Toolbar>
-                <Typography variant="h6">
-                  전환 컨테이너
-                </Typography>
-              </Toolbar>
+                <Toolbar>
+                    <Link href="/">
+                        <Typography variant="h6">
+                        전환 컨테이너
+                        </Typography>
+                    </Link>
+                </Toolbar>
             </AppBar>
 
             <Container maxWidth="xl">
