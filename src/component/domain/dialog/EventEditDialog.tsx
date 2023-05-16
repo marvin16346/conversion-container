@@ -1,18 +1,20 @@
 import SyntaxEditor from "@/component/common/SyntaxEditor";
-import domain from "@/pages/api/domain";
-import media from "@/pages/api/media";
-import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, Button, DialogActions } from "@mui/material";
-import { version } from "react";
+import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, Button, DialogActions, FormControl, FormLabel, FormHelperText, FormGroup } from "@mui/material";
 import { Event } from "@/data/event";
+import defaultAxios from "@/axios/axios";
 
 type Props = {
     event: Event,
     open: boolean,
     onClose: Function,
-    onSubmit: Function
+    apiMethod: "put" | "post"
 };
 
-const EventEditDialog = ({ event, open, onClose, onSubmit }: Props) => {
+const nameId = "event-name";
+const funcId = "event-editor-code-input";
+const urlId = "event-url-text";
+
+const EventEditDialog = ({ event, open, onClose, apiMethod }: Props) => {
 
     return ( 
         <Dialog onClose={onClose} open={open}>
@@ -27,46 +29,51 @@ const EventEditDialog = ({ event, open, onClose, onSubmit }: Props) => {
                     paddingTop: "20px !important"
                 }}
             >
-                <Stack spacing={8}>
-                    <Box>
-                        <TextField
-                            id="event-name"
-                            label="이벤트명"
-                            sx={{
-                                flexGrow: 1
-                            }}
-                            defaultValue={event.name}
-                           
-                        />
-                    </Box>
-
-                    <Box>
-                        <Typography variant="h5">
-                            이벤트 등록 함수
-                        </Typography>
-                        <SyntaxEditor
-                            text={""}
-                            keyString="event-editor"
-                        />
-                    </Box>
-
-                    <Box>
-                        <Typography variant="h5">
-                            이벤트 발생 url 정규식
-                        </Typography>
-                        <Stack direction={'row'} >
+                <FormControl  
+                    component="fieldset"    
+                >
+                    <Stack
+                        spacing={4}
+                    >
+                        <FormGroup>
+                            <FormLabel>
+                                이벤트명
+                            </FormLabel>
                             <TextField
-                                id="event-url-text"
-                                label="이벤트가 발생할 url (정규식)"
+                                id={nameId}
+                                sx={{
+                                    flexGrow: 1
+                                }}
+                                defaultValue={event.name}
+                            
+                            />
+                        </FormGroup>
+
+                        <FormGroup>
+                            <FormLabel>
+                                이벤트 등록 함수
+                            </FormLabel>
+                            <SyntaxEditor
+                                text={""}
+                                keyString="event-editor"
+                            />
+                        </FormGroup>
+                        
+                        <FormGroup>
+                            <FormLabel>
+                                이벤트 발생 url 정규식
+                            </FormLabel>
+                            <TextField
+                                id={urlId}
                                 sx={{
                                     flexGrow: 1
                                 }}
                                 onChange={() => {}}
                             />
-                        </Stack>
-
-                    </Box>
-                </Stack>
+                        </FormGroup>
+                    </Stack>
+                </FormControl>
+            
             </DialogContent>
             <DialogActions>
                 <Button 
@@ -76,7 +83,22 @@ const EventEditDialog = ({ event, open, onClose, onSubmit }: Props) => {
                     취소
                 </Button>
                 <Button 
+                    type="submit"
                     variant="contained"
+                    onClick={async () => {
+                        console.log(apiMethod)
+                        const res = await defaultAxios[apiMethod](
+                            apiMethod == "put" ? `/event/${event.name}` : '/event', 
+                            {
+                                name: document.getElementById(nameId)!.value,
+                                regUrl: document.getElementById(urlId)!.value,
+                                eventListener: document.getElementById(funcId)!.value,
+                            }
+                        );
+                        if (res.status == 200) {
+                            onClose();
+                        }
+                    }}
                 >
                     저장
                 </Button>

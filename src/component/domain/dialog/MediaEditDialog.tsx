@@ -4,6 +4,7 @@ import { Media } from "@/data/media";
 import { useState } from "react";
 import SyntaxEditor from "../../common/SyntaxEditor";
 import { useRouter } from "next/router";
+import defaultAxios from "@/axios/axios";
 
 type Props = {
     media: Media,
@@ -75,6 +76,15 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                 </Button>
                 <Button 
                     variant="contained"
+                    onClick={async () => {
+                        const res = await defaultAxios.put(
+                            "/media", 
+                            {
+                                name: media.name,
+                                commonScript : document.getElementById("media-editor-code-input")!.value,
+                            }    
+                        )
+                    }}
                 >
                     저장
                 </Button>

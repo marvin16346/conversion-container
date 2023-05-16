@@ -1,4 +1,3 @@
-import domain from "@/pages/api/domain"
 import { Grid, Typography, Divider } from "@mui/material"
 import Media from "../unit/Media"
 import { useRouter } from "next/router"

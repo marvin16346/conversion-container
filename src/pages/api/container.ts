@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Domain } from '@/data/domain';
+import { Container } from '@/data/container';
 
-type Data = Array<Domain>
+type Data = Array<Container>
 
 export default function handler(
   req: NextApiRequest,
