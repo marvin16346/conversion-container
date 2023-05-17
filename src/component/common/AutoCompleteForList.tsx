@@ -9,9 +9,10 @@ type Props = {
     allItems: Item[],
     showingItems: Item[],
     setShowing: Function,
+    onSelect?: Function
 }
 
-const AutoCompleteForList = ({ allItems, showingItems, setShowing  }: Props) => {
+const AutoCompleteForList = ({ allItems, showingItems, setShowing, onSelect  }: Props) => {
     useEffect(() => {
         setShowing(allItems);
         return () => {
@@ -33,6 +34,11 @@ const AutoCompleteForList = ({ allItems, showingItems, setShowing  }: Props) => 
                     setShowing(allItems.filter((item) => 
                         item.label.includes(newInput)
                     ));
+                }
+            }}
+            onChange={(event, newValue) => {
+                if (onSelect && newValue) {
+                    onSelect(newValue.name);
                 }
             }}
         />

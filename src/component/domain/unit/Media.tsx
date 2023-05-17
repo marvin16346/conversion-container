@@ -65,12 +65,7 @@ const Media = ({ domain }: Props) => {
                     open={open}
                     onClose={() => setOpen(false)}
                     onSubmit={async () => {
-                        const res = await defaultAxios.post('/trackingId', {
-                            name:  document.getElementById("additional-tracking-id")?.innerText
-                        });
-                        if (res.status == 200) {
-                            mutate(`/trackingId?domain=${domain}&version=${version}&media=${selectedMedia.name}`);
-                        }
+                        
                     }}
                 />
             }

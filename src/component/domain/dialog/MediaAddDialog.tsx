@@ -5,36 +5,39 @@ import { useState } from "react";
 import SyntaxEditor from "../../common/SyntaxEditor";
 import { useRouter } from "next/router";
 import defaultAxios from "@/axios/axios";
+import PlatformOption from "../unit/PlatformOption";
 
 type Props = {
-    media: Media,
     open: boolean,
     onClose: Function,
-    onSubmit: Function
 }
 
-const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
-    // const [open, setOpen] = useState<boolean>(false);
-    const router = useRouter();
-    const [trackingList, setTrackingList] = useState<Array<string>>(media.trackingList);
-
+const MediaAddDialog = ({ open, onClose }: Props) => {
+    const [trackingList, setTrackingList] = useState<Array<string>>([]);
+    const [selectedPlatform, setSelectedPlatform] = useState<string>("");
 
     return ( 
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
                 <Typography variant="h4">
-                    {media.name} 설정
+                    매체 추가
                 </Typography>
             </DialogTitle>
 
             <DialogContent>
                 <Stack spacing={8}>
                     <Box>
+                        <PlatformOption
+                            onSelect={setSelectedPlatform}
+                        />
+                    </Box>
+
+                    <Box>
                         <Typography variant="h5">
                             공통 유틸리티 스크립트
                         </Typography>
                         <SyntaxEditor
-                            text={media.commonScript}
+                            text={""}
                             keyString="media-editor"
                         />
                     </Box>
@@ -43,8 +46,8 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                         <Typography variant="h5">
                             트래킹 ID 리스트
                         </Typography>
-                        <TrackingId 
-                            trackingList={trackingList}
+                        <TrackingId
+                            trackingList={trackingList} 
                             setTrackingList={setTrackingList}
                         />
                     </Box>
@@ -60,10 +63,11 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                 <Button 
                     variant="contained"
                     onClick={async () => {
-                        const res = await defaultAxios.put(
-                            `/media/${media.name}`, 
+                        if (!selectedPlatform) return;
+                        const res = await defaultAxios.post(
+                            `/media/${selectedPlatform}`, 
                             {
-                                name: media.name,
+                                name: selectedPlatform,
                                 commonScript : document.getElementById("media-editor-code-input")!.value,
                                 trackingList: trackingList
                             }    
@@ -77,4 +81,4 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
      );
 }
  
-export default MediaEditDialog;
+export default MediaAddDialog;

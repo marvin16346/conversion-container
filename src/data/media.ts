@@ -24,3 +24,12 @@ export function useMedia(domain: string) {
         error,
     }
 }
+
+export function makeMedia(): Media {
+    return {
+        name: '',
+        using: false,
+        commonScript: '',
+        trackingList: [],
+    }
+}

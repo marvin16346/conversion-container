@@ -1,70 +1,66 @@
-import { IconButton, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
-import { useTrigger } from "@/data/trigger";
-import FetchList from "@/component/common/FetchList";
-import { useTrackingId } from '@/data/trackingId';
+import { Button, IconButton, Box, Stack, TextField, List, ListItem, ListItemButton, ListItemText } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import defaultAxios from '@/axios/axios';
-import { mutate, useSWRConfig } from 'swr';
 import { Media } from '@/data/media';
 import { useEffect, useState } from 'react';
 
 
 interface Props {
-    domain: string,
-    version: string,
-    media: Media
+    trackingList: string[],
+    setTrackingList: Function
 }
 
-const TrackingId = ({ domain, version, media }: Props) => {
-
-    const [trackingList, setTrackingList] = useState<Array<string>>([]);
-
-    useEffect(() => {
-      setTrackingList(media.trackingList);
-    
-      return () => {
-      }
-    }, []);
-    
+const TrackingId = ({ trackingList, setTrackingList }: Props) => {
 
     return (
-        <List>
-            {
-                trackingList.map((trackingId) => 
-                    <ListItem
-                        key={trackingId}
-                        secondaryAction={
-                            <IconButton edge="end" aria-label="delete">
-                                <DeleteIcon
-                                    onClick={async () => {
-                                        let nextTrackingList = trackingList.filter(
-                                            (original) => original != trackingId
-                                        );
-                                        const res = await defaultAxios.put(`/media?domain=${domain}`,
-                                            {
-                                                media: {
-                                                    ...media,
-                                                    trackingList: nextTrackingList
-                                                }
-                                            }
-                                        );
-                                        if (res.status == 200) {
-                                            // mutate(`/media?domain=${domain}`);
+        <Box>
+            <List>
+                {
+                    trackingList.map((trackingId) => 
+                        <ListItem
+                            key={trackingId}
+                            secondaryAction={
+                                <IconButton edge="end" aria-label="delete">
+                                    <DeleteIcon
+                                        onClick={async () => {
+                                            let nextTrackingList = trackingList.filter(
+                                                (original) => original != trackingId
+                                            );
                                             setTrackingList(nextTrackingList);
-                                        }
-                                    }}
-                                />
-                            </IconButton>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton dense>
-                            <ListItemText primary={trackingId} />
-                        </ListItemButton>
-                    </ListItem>
-                )
-            }
-        </List>
+                                        }}
+                                    />
+                                </IconButton>
+                            }
+                            disablePadding
+                        >
+                            <ListItemButton dense>
+                                <ListItemText primary={trackingId} />
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                }
+            </List>
+            <Stack direction={'row'} >
+                <TextField
+                    id="more-tracking-id"
+                    label="트래킹 id"
+                    sx={{
+                        flexGrow: 1
+                    }}
+                />
+                <Button 
+                    variant="outlined"
+                    onClick={() => {
+                        setTrackingList([
+                            ...trackingList,
+                            document.getElementById("more-tracking-id").value
+                        ]);
+                    }}
+                >
+                    추가
+                </Button>
+            </Stack>
+        </Box>
     )
 }
  
