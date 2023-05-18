@@ -7,8 +7,8 @@ export type Conversion = {
     // id: number | null,
     // media: Media | null,
     // event: Event | null,
-    triggerKey: string | null,
-    executionCode: string | null,
+    name: string | null,
+    script: string | null,
 }
 
 type Data = Conversion;
@@ -27,7 +27,7 @@ type Props = {
 }
 
 export function useConversion({ domain, event, media } : Props) {
-    const { data, error, isLoading, mutate }: Swr = useSWR(`/conversion?domain=${domain}&media=${media}&event=${event}`);
+    const { data, error, isLoading, mutate }: Swr = useSWR(`/containers/${domain}/tags?platform_name=${media}&event_name=${event}`);
     
     return {
         conversion: data || makeConversion(),
@@ -39,7 +39,7 @@ export function useConversion({ domain, event, media } : Props) {
 
 export function makeConversion(): Conversion {
     return {
-        triggerKey: "",
-        executionCode: ""
+        name: "",
+        script: ""
     }
 }

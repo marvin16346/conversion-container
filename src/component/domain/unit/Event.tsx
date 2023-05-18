@@ -13,13 +13,18 @@ import CheckIcon from '@mui/icons-material/Check';
 import BlockIcon from '@mui/icons-material/Block';
 import AutoCompleteForList from '@/component/common/AutoCompleteForList';
 
+type Props = {
+    domain: string
+}
+
 interface ExtendedEvent extends Event {
     label: string
 }
 
-const Event = () => {
-    const { makingConversion, setEvent } = useContext(MakingConversionContext);
-    const { events, error, isLoading } = useEvent();
+const Event = ({ domain }: Props) => {
+
+    const { setEvent } = useContext(MakingConversionContext);
+    const { events, error, isLoading } = useEvent(domain as string);
     const [selectedEvent, setSelectedEvent] = useState<Event|null>(null);
     const [open, setOpen] = useState<boolean>(false);
     const [allEvents, setAllEvents] = useState<Array<ExtendedEvent>>([]);
@@ -49,12 +54,13 @@ const Event = () => {
             }
 
             {
-                selectedEvent &&
+                selectedEvent && domain
+                &&
                 <EventEditDialog
-                    event={selectedEvent}
+                    domain={domain as string}
+                    event={selectedEvent.name}
                     open={open}
                     onClose={() => setOpen(false)}
-                    apiMethod='put'
                 />
             }
 

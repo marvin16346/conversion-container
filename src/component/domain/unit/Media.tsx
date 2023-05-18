@@ -10,7 +10,6 @@ import BlockIcon from '@mui/icons-material/Block';
 import MediaEditDialog from '../dialog/MediaEditDialog';
 import defaultAxios from '@/axios/axios';
 import { useSWRConfig } from 'swr';
-import { useRouter } from 'next/router';
 import EditIcon from '@mui/icons-material/Edit';
 import AutoCompleteForList from '@/component/common/AutoCompleteForList';
 
@@ -24,22 +23,19 @@ interface ExtendedMedia extends Media {
 
 const Media = ({ domain }: Props) => {
     const { medias, error, isLoading }  = useMedia(domain);
-    const { makingConversion, setMedia } = useContext(MakingConversionContext);
+    const { setMedia } = useContext(MakingConversionContext);
     const [open, setOpen] = useState<boolean>(false);
     const [selectedMedia, setSelectedMedia] = useState<Media|null>(null);
     const [showingMedias, setShowingMedias] = useState<Array<ExtendedMedia>>([]);
     const [allMedias, setAllMedias] = useState<Array<ExtendedMedia>>([]);
     
-    const {mutate} = useSWRConfig();
-    const router = useRouter();
-    const { version } = router.query;
 
 
     useEffect(() => {
         setAllMedias(
             medias.map((media) => ({
                 ...media,
-                label: media.name
+                label: media.platform_name
             }))
         );
     
@@ -61,12 +57,10 @@ const Media = ({ domain }: Props) => {
             {
                 selectedMedia &&
                 <MediaEditDialog
-                    media={selectedMedia}
+                    domain={domain}
+                    platform={selectedMedia.platform_name}
                     open={open}
                     onClose={() => setOpen(false)}
-                    onSubmit={async () => {
-                        
-                    }}
                 />
             }
 
@@ -77,9 +71,9 @@ const Media = ({ domain }: Props) => {
                 fetchedList: showingMedias, 
                 error,
                 isLoading,
-                mapFunction: (elem) => (
+                mapFunction: (elem: Media) => (
                     <ListItem
-                        key={elem.name}
+                        key={elem.platform_name}
                         secondaryAction={
                             <>
                                 <IconButton 
@@ -93,66 +87,70 @@ const Media = ({ domain }: Props) => {
                                 >
                                     <EditIcon/>
                                 </IconButton>
-                                {
-                                    elem.using
-                                    ?
-                                    <IconButton 
-                                        edge="end" 
-                                        aria-label="add" 
-                                        onClick={async (evt) => {
-                                            evt.stopPropagation();
-                                            const res = await defaultAxios.put(
-                                                "/media",
-                                                {
-                                                    using: true
-                                                }
+
+                                <IconButton 
+                                    edge="end" 
+                                    onClick={async (evt) => {
+                                        evt.stopPropagation();
+                                        const res = await defaultAxios.put(
+                                            `/containers/${domain}/mediums/${elem.platform_name}/is_using`,
+                                        );
+                                        if (res.status == 200) {
+                                            setAllMedias(
+                                                allMedias.map((media) => (
+                                                    media.platform_name == elem.platform_name
+                                                    ?
+                                                     {
+                                                        ...media,
+                                                        is_using: !media.is_using
+                                                    }
+                                                    :
+                                                    media
+                                                ))
                                             );
-                                            if (res.status == 200) {
-                                                mutate(`/media?domain=${domain}`);
-                                            }
-                                        }}
+                                            // mutate(
+                                            //     `/containers${domain}/mediums`,
+                                                // medias.map((media) => (
+                                                //     media.platform_name == elem.platform_name
+                                                //     ?
+                                                //      {
+                                                //         ...media,
+                                                //         is_using: !media.is_using
+                                                //     }
+                                                //     :
+                                                //     media
+                                                // ))
+                                            // );
+                                        }
+                                    }}
                                     >
+                                    {
+                                        elem.is_using
+                                        ?
                                         <RemoveCircleIcon/>
-                                    </IconButton>
-                                    :
-                                    <IconButton 
-                                        edge="end" 
-                                        aria-label="add" 
-                                        onClick={async (evt) => {
-                                            evt.stopPropagation();
-                                            const res = await defaultAxios.put(
-                                                "/media",
-                                                {
-                                                    using: false
-                                                }
-                                            );
-                                            if (res.status == 200) {
-                                                mutate(`/media?domain=${domain}`);
-                                            }
-                                        }}
-                                    >
+                                        :
                                         <AddCircleIcon/>
-                                    </IconButton>
-                                }
+                                    }
+                                </IconButton>
                             </>
                         }
                     >
                         <ListItemButton 
-                            key={elem.name} 
+                            key={elem.platform_name} 
                             onClick={() => {
                                 setMedia(elem);
                             }}
                         >
                             <ListItemIcon>
                                 {
-                                    elem.using
+                                    elem.is_using
                                     ?
                                     <CheckIcon color="success" />
                                     :
                                     <BlockIcon color="secondary" />
                                 }
                             </ListItemIcon>
-                            {elem.name}
+                            {elem.platform_name}
                         </ListItemButton>
                     </ListItem>
                 )

@@ -1,13 +1,14 @@
 import { Grid, Stack, Typography, IconButton, Divider } from "@mui/material";
 import Event from "@/component/domain/unit/Event";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import EventEditDialog from "@/component/domain/dialog/EventEditDialog";
 import { useState } from "react";
-import { makeEvent } from "@/data/event";
+import { useRouter } from "next/router";
+import EventAddDialog from "../dialog/EventAddDialog";
 
 const EventPanel = () => {
     const [open, setOpen] = useState<boolean>(false);
-
+    const router = useRouter();
+    const { domain } = router.query;
 
     return ( 
         <>
@@ -26,15 +27,20 @@ const EventPanel = () => {
                     </IconButton>
                 </Stack>
                 <Divider color="gray"/>
-                <Event/>
+                <Event
+                    domain={domain as string}
+                />
             </Grid>
 
-            <EventEditDialog
-                event={makeEvent()}
-                open={open}
-                onClose={() => setOpen(false)}
-                apiMethod={"post"}
-            />
+            {
+                domain
+                &&
+                <EventAddDialog
+                    domain={domain as string}
+                    open={open}
+                    onClose={() => setOpen(false)}
+                />
+            }
         </>
      );
 }

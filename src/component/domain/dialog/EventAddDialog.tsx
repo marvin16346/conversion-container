@@ -1,12 +1,11 @@
 import SyntaxEditor from "@/component/common/SyntaxEditor";
 import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, Button, DialogActions, FormControl, FormLabel, FormHelperText, FormGroup } from "@mui/material";
-import { Event, EventDetail } from "@/data/event";
+import { Event } from "@/data/event";
 import defaultAxios from "@/axios/axios";
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 
 type Props = {
     domain: string,
-    event: string,
     open: boolean,
     onClose: Function,
 };
@@ -15,20 +14,16 @@ const nameId = "event-name";
 const funcId = "event-editor-code-input";
 const urlId = "event-url-text";
 
-const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
-    const { data: eventDetail }: {data: EventDetail | undefined} = useSWR(`/containers/${domain}/events/${event}`);
+const EventAddDialog = ({ domain, open, onClose }: Props) => {
 
     return ( 
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
                 <Typography variant="h4">
-                    이벤트 설정
+                    이벤트 추가
                 </Typography>
             </DialogTitle>
 
-            {
-            eventDetail
-            &&
             <DialogContent
                 sx={{
                     paddingTop: "20px !important"
@@ -49,7 +44,6 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                                 sx={{
                                     flexGrow: 1
                                 }}
-                                defaultValue={eventDetail.name}
                             />
                         </FormGroup>
 
@@ -58,7 +52,7 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                                 이벤트 등록 함수
                             </FormLabel>
                             <SyntaxEditor
-                                text={eventDetail.func_code}
+                                text={""}
                                 keyString="event-editor"
                             />
                         </FormGroup>
@@ -72,14 +66,13 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                                 sx={{
                                     flexGrow: 1
                                 }}
-                                defaultValue={eventDetail.url_reg}
+                                onChange={() => {}}
                             />
                         </FormGroup>
                     </Stack>
                 </FormControl>
             
             </DialogContent>
-            }
             <DialogActions>
                 <Button 
                     variant="contained"
@@ -91,18 +84,15 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                     type="submit"
                     variant="contained"
                     onClick={async () => {
-                        const res = await defaultAxios.put(
-                            `/containers/${domain}/events/${event}`, 
+                        const res = await defaultAxios.post(
+                            `/containers/${domain}/events`, 
                             {
                                 name: document.getElementById(nameId)!.value,
                                 url_reg: document.getElementById(urlId)!.value,
                                 func_code: document.getElementById(funcId)!.value,
                             }
                         );
-                        if (res.status == 200) {
-                            mutate(
-                                `/containers/${domain}/events/${document.getElementById(nameId)!.value}`, 
-                            );
+                        if (res.status == 200 || res.status == 201) {
                             onClose();
                         }
                     }}
@@ -114,4 +104,4 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
      );
 }
  
-export default EventEditDialog;
+export default EventAddDialog;

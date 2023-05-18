@@ -12,8 +12,8 @@ type Swr = {
     isLoading: boolean,
 }
 
-export function usePlatform() {
-    const { data, error, isLoading }: Swr = useSWR(`/platforms`);
+export function usePlatform(domain: string) {
+    const { data, error, isLoading }: Swr = useSWR(`/platforms?container_domain=${domain}`);
     
     return {
         platforms: data || [],

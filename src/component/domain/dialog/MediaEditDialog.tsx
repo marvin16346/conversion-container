@@ -1,32 +1,41 @@
 import {  Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemButton, ListItemText, TextareaAutosize, Typography, Button, Stack, TextField } from "@mui/material";
 import TrackingId from "@/component/domain/unit/TrackingId";
-import { Media } from "@/data/media";
-import { useState } from "react";
+import { Media, MediaDetail } from "@/data/media";
+import { useEffect, useState } from "react";
 import SyntaxEditor from "../../common/SyntaxEditor";
-import { useRouter } from "next/router";
 import defaultAxios from "@/axios/axios";
+import useSWR, {mutate} from 'swr';
+
 
 type Props = {
-    media: Media,
+    domain: string,
+    platform: string,
     open: boolean,
     onClose: Function,
-    onSubmit: Function
 }
 
-const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
-    // const [open, setOpen] = useState<boolean>(false);
-    const router = useRouter();
-    const [trackingList, setTrackingList] = useState<Array<string>>(media.trackingList);
+const MediaEditDialog = ({ domain, platform, open, onClose }: Props) => {
+    const [trackingList, setTrackingList] = useState<Array<string>>([]);
+    const { data: mediaDetail }: {data: MediaDetail | undefined} = useSWR(`/containers/${domain}/mediums/${platform}`);
 
+    useEffect(() => {
+      mediaDetail && setTrackingList(mediaDetail.tracking_list);
+      return () => {
+      }
+    }, [mediaDetail]);
+    
 
     return ( 
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
                 <Typography variant="h4">
-                    {media.name} 설정
+                    {platform} 설정
                 </Typography>
             </DialogTitle>
 
+            {
+            mediaDetail
+            &&
             <DialogContent>
                 <Stack spacing={8}>
                     <Box>
@@ -34,7 +43,7 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                             공통 유틸리티 스크립트
                         </Typography>
                         <SyntaxEditor
-                            text={media.commonScript}
+                            text={mediaDetail.base_code}
                             keyString="media-editor"
                         />
                     </Box>
@@ -50,6 +59,8 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                     </Box>
                 </Stack>
             </DialogContent>
+            }
+
             <DialogActions>
                 <Button 
                     variant="contained"
@@ -61,13 +72,18 @@ const MediaEditDialog = ({ media, open, onClose, onSubmit }: Props) => {
                     variant="contained"
                     onClick={async () => {
                         const res = await defaultAxios.put(
-                            `/media/${media.name}`, 
+                            `/containers/${domain}/mediums/${platform}`, 
                             {
-                                name: media.name,
-                                commonScript : document.getElementById("media-editor-code-input")!.value,
-                                trackingList: trackingList
+                                base_code : document.getElementById("media-editor-code-input")!.value,
+                                tracking_list: trackingList
                             }    
                         )
+                        if (res.status == 200) {
+                            mutate(
+                                `/containers/${domain}/mediums/${platform}`, 
+                            );
+                            onClose();
+                        }
                     }}
                 >
                     저장

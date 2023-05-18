@@ -29,7 +29,6 @@ type MakingConversion = {
     setMedia: (elem: Media) => void,
     setEvent: (elem: Event) => void,
     isAllSet: () => boolean,
-    saveConversion: (triggerKey: string, executionCode: string) => void
 }
 
 export const MakingConversionContext =  createContext<MakingConversion>({
@@ -42,7 +41,6 @@ export const MakingConversionContext =  createContext<MakingConversion>({
     setMedia: (elem: Media) => {},
     setEvent: (elem: Event) => {},
     isAllSet: () => { return false; },
-    saveConversion: (triggerKey: string, executionCode: string) => {}
 });
 
 // export const AllConversionContext =  createContext<AllConversion>({
@@ -73,16 +71,6 @@ const ConversionProvider = ({ children }: Props) => {
                 }
                 return false;
             },
-            saveConversion: async (triggerKey: string, executionCode: string) => {
-                return await defaultAxios.post(
-                    "/conversion", 
-                    {
-                        ...makingConversion,
-                        triggerKey,
-                        executionCode
-                    }
-                )
-            }
         }}>
             {/* <AllConversionContext.Provider value={{
                 allConversion,

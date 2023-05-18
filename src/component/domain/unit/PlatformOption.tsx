@@ -9,11 +9,12 @@ interface PlatformOption extends Platform {
 }
 
 type Props = {
-    onSelect: Function
+  domain: string
+  onSelect: Function
 }
 
-const PlatformOption = ({ onSelect }: Props) => {
-    const { platforms, error, isLoading } =  usePlatform();;
+const PlatformOption = ({ domain, onSelect }: Props) => {
+    const { platforms, error, isLoading } =  usePlatform(domain);
     const [allPlatforms, setAllPlatforms] = useState<PlatformOption[]>([]);
     const [showingPlatforms, setShowingPlatforms] = useState<PlatformOption[]>([]);
 

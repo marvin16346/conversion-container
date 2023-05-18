@@ -13,8 +13,8 @@ type Swr = {
 }
 
 export function useContainer() {
-    // const { data, error, isLoading }: Swr = useSWR("/container/?user_id=1");
-    const { data, error, isLoading }: Swr = useSWR("/container");
+    const { data, error, isLoading }: Swr = useSWR("/containers?user_id=1");
+    // const { data, error, isLoading }: Swr = useSWR("/container");
     
     return {
         containers: data || [],

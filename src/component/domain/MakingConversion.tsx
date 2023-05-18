@@ -18,7 +18,7 @@ const MakingConversion = () => {
             >
                 {/* 매체 선택 */}
                 <Grid item xs={6}>
-                    <Typography variant="h5" color="initial">{makingConversion.media?.name}</Typography>
+                    <Typography variant="h5" color="initial">{makingConversion.media?.platform_name}</Typography>
                 </Grid>
 
                 <Grid item xs={6}>

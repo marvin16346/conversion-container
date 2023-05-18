@@ -1,10 +1,16 @@
 import useSWR from 'swr';
 
 export type Media = {
-    name: string,
-    using: boolean,
-    commonScript: string,
-    trackingList: Array<string>
+    platform_name: string,
+    is_using: boolean,
+}
+
+
+export type MediaDetail = {
+    platform_name: string,
+    is_using: boolean,
+    base_code: string,
+    tracking_list: Array<string>
 }
 
 type Data = Array<Media>
@@ -16,7 +22,7 @@ type Swr = {
 }
 
 export function useMedia(domain: string) {
-    const { data, error, isLoading }: Swr = useSWR(`/media?domain=${domain}`);
+    const { data, error, isLoading }: Swr = useSWR(`/containers/${domain}/mediums`);
     
     return {
         medias: data || [],
@@ -27,9 +33,9 @@ export function useMedia(domain: string) {
 
 export function makeMedia(): Media {
     return {
-        name: '',
-        using: false,
-        commonScript: '',
-        trackingList: [],
+        platform_name: '',
+        is_using: false,
+        base_code: '',
+        tracking_list: [],
     }
 }

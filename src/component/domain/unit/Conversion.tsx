@@ -5,20 +5,21 @@ import { useConversion } from '@/data/conversion';
 import { useContext, useEffect, useState } from 'react';
 import Loading from '@/component/common/Loading';
 import { MakingConversionContext } from "@/provider/ConversionProvider"
+import defaultAxios from "@/axios/axios";
 
 const Conversion = () => {
     const router = useRouter();
     const { domain } = router.query;
-    const { makingConversion, saveConversion } = useContext(MakingConversionContext);
+    const { makingConversion } = useContext(MakingConversionContext);
     const { conversion, isLoading, error, mutate } = useConversion({
         domain: domain! as string,
-        media: makingConversion.media!.name,
+        media: makingConversion.media!.platform_name,
         event: makingConversion.event!.name
     });
     const [triggerKey, setTriggerKey] = useState<string>("");
 
     useEffect(() => {
-        setTriggerKey(conversion.triggerKey!);
+        conversion.name && setTriggerKey(conversion.name);
             
         return () => {
         }
@@ -59,7 +60,7 @@ const Conversion = () => {
                 <Grid item xs={6}>
                     <SyntaxEditor
                         keyString="conversion-editor"
-                        text={new String(conversion.executionCode!)}
+                        text={new String(conversion.script!)}
                     />
                 </Grid>
 
@@ -75,12 +76,16 @@ const Conversion = () => {
                     variant="contained"
                     onClick={
                         async () => {
-                            const res = await saveConversion(
-                                document.getElementById("trigger-key")!.value,
-                                document.getElementById("conversion-editor-code-input")!.value,
+                            const res = await defaultAxios.put(
+                                `/containers/${domain}/tags/${conversion.name}`,
+                                {
+                                    name: document.getElementById("trigger-key")!.value,
+                                    script: document.getElementById("conversion-editor-code-input")!.value,
+                                }
                             );
-                            // TODO: mutate
-                            // mutate();
+                            if (res.status == 200) {
+                                // mutate(url);
+                            } 
                         }
                     }
                 >
@@ -88,7 +93,7 @@ const Conversion = () => {
                 </Button>
             </Box>
         </>
-    );
+    );  
 }
  
 export default Conversion;

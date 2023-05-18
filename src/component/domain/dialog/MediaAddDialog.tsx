@@ -8,11 +8,12 @@ import defaultAxios from "@/axios/axios";
 import PlatformOption from "../unit/PlatformOption";
 
 type Props = {
+    domain: string,
     open: boolean,
     onClose: Function,
 }
 
-const MediaAddDialog = ({ open, onClose }: Props) => {
+const MediaAddDialog = ({ domain, open, onClose }: Props) => {
     const [trackingList, setTrackingList] = useState<Array<string>>([]);
     const [selectedPlatform, setSelectedPlatform] = useState<string>("");
 
@@ -28,6 +29,7 @@ const MediaAddDialog = ({ open, onClose }: Props) => {
                 <Stack spacing={8}>
                     <Box>
                         <PlatformOption
+                            domain={domain}
                             onSelect={setSelectedPlatform}
                         />
                     </Box>
@@ -65,13 +67,17 @@ const MediaAddDialog = ({ open, onClose }: Props) => {
                     onClick={async () => {
                         if (!selectedPlatform) return;
                         const res = await defaultAxios.post(
-                            `/media/${selectedPlatform}`, 
+                            `/containers/${domain}/mediums`, 
                             {
-                                name: selectedPlatform,
-                                commonScript : document.getElementById("media-editor-code-input")!.value,
-                                trackingList: trackingList
+                                platform_name: selectedPlatform,
+                                base_code : document.getElementById("media-editor-code-input")!.value,
+                                tracking_list: trackingList,
+                                is_using: true,
                             }    
                         )
+                        if (res.status == 200 || res.status == 201) {
+                            onClose();
+                        }
                     }}
                 >
                     저장
