@@ -12,7 +12,8 @@ export const AuthContext = createContext({
     username: "",
     setAccessToken: (token: string) => {},
     setRefreshToken: (token: string) => {},
-    setUsername: (username: string) => {}
+    setUsername: (username: string) => {},
+    logout: () => {},
 });
 
 const AuthProvider = ({ children }: Props) => {
@@ -45,7 +46,14 @@ const AuthProvider = ({ children }: Props) => {
                 setRefreshToken(token);
                 localStorage.setItem("refreshToken", token);
             },
-            setUsername
+            setUsername,
+            logout: () => {
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken");
+                setAccessToken("");
+                setRefreshToken("");
+                setUsername("");
+            },
         }}>
             {children}
         </AuthContext.Provider>

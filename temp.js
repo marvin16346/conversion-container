@@ -6,16 +6,19 @@ document.head.appendChild(commonScript);
 // 각 매체의 트래킹 id 리스트 관련
 const trackingScript = document.createElement("script");
 // 카카오 매체의 트래킹 id 리스트 순회, 이벤트 순회
-// eventCode는?
-trackingScript.src += `
-    kakaoPixel(${trackingId})[${eventCode}]();
-`
-
+// tracking id 어디에 쓸 지 모르겠어요
+// trackingScript.src += `
+//     kakaoPixel(${trackingId})[${eventCode}]();
 document.head.appendChild(trackingScript);
 
 
 function $trigger(eventName) {
-
+    // db 반영해서 순회하며 생성
+    if (eventName == "myClick" && window.location.href == myClick.url_reg) {
+        // kakao 실행 함수
+        // meta 실행 함수
+        // ...
+    }
 }
 
 // 이벤트 순회

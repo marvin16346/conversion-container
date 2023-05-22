@@ -16,9 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
     >
       <AuthProvider>
         <DefaultLayout>
-          {/* <AuthChecker> */}
+          <AuthChecker>
             <Component {...pageProps} />
-          {/* </AuthChecker>  */}
+          </AuthChecker> 
         </DefaultLayout> 
       </AuthProvider>
     </SWRConfig>

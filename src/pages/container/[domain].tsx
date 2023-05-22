@@ -5,10 +5,17 @@ import ConversionProvider from "@/provider/ConversionProvider";
 import MakingConversion from "@/component/domain/MakingConversion";
 import MediaPanel from '@/component/domain/panel/MediaPanel';
 import EventPanel from '@/component/domain/panel/EventPanel';
+import { useState } from "react";
+import DeployDialog from "@/component/domain/dialog/DeployDialog";
 
 const TagManager = () => {
+    const [open, setOpen] = useState<boolean>(false);
     const router = useRouter();
     const { domain } = router.query;
+
+    if (!router.isReady) {
+        return;
+    }
 
     return ( 
         <Box>
@@ -24,7 +31,11 @@ const TagManager = () => {
                         <Typography variant="h3" color="initial">{domain}</Typography>
                     </Grid>
                     <Grid item xs={4}>
-                        <Button variant="contained" >
+                        <Button variant="contained"
+                            onClick={() => {
+                                setOpen(true);
+                            }}
+                         >
                             배포하기 
                         </Button>
                     </Grid>
@@ -52,6 +63,16 @@ const TagManager = () => {
                     {/* <AllConversion/> */}
                 </Stack>
             </ConversionProvider>   
+
+            {
+                domain
+                &&
+                <DeployDialog 
+                    domain={domain as string} 
+                    open={open} 
+                    onClose={() => setOpen(false)}
+                />
+            }
         </Box>
      );
 }

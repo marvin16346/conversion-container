@@ -1,8 +1,9 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "@/provider/AuthProvider";
-
+import defaultAxios from "@/axios/axios";
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 
 const GoogleLoginCallback = () => {
     const router = useRouter();
@@ -11,31 +12,25 @@ const GoogleLoginCallback = () => {
     const { setAccessToken, setRefreshToken, setUsername } = useContext(AuthContext);
 
     useEffect(() => {
-      // const func = async () => {
-      //   const res = await fetch(`https://localhost:5000/login/google/callback?code=${code}`);
-      //   const data = await res.json();
-      //   console.log(data);
-      // };
-
-      // func();
       if (!code) {
         return;
       }
 
-      fetch(`https://localhost:5000/login/google/callback?code=${code}`)
-        .then(res => {
-          res.json()
-            .then(data => {
-              setAccessToken(data.access_token);
-              setRefreshToken(data.refresh_token);
-              setUsername(data.username);
-              router.back();
-            })
-        })
-        .catch(err => {
-          console.error(err);
-        });
-        
+      async function getToken() {
+        const res = await defaultAxios.get(
+          `/login/google?${Object.keys(router.query).map((k) => `${k}=${router.query[k]}`).join("&")}`
+        );
+        if (res.status == 200) {
+          setAccessToken(res.data.access_token);
+          setRefreshToken(res.data.refresh_token);
+          setUsername(res.data.user_code);
+          router.replace("/");
+        } else {
+          console.error(res.data);
+        }
+      }
+
+      getToken();    
     
       return () => {
       }
@@ -43,9 +38,26 @@ const GoogleLoginCallback = () => {
     
 
     return ( 
-        <Box>
-            로그인 대기
-        </Box>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid
+          item
+        >
+            <HourglassEmptyIcon 
+              className="rotation"
+              color="primary"
+              sx={{
+                fontSize: "10rem"
+              }}
+            />
+            <p>
+              로그인 중
+            </p>
+        </Grid>
+      </Grid>
      );
 }
  

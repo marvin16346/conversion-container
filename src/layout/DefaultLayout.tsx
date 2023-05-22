@@ -1,10 +1,12 @@
-import { FC, ReactElement } from "react";
+import { FC, ReactElement, useContext } from "react";
 import Head from 'next/head'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Link from 'next/link';
+import { Box, Button } from "@mui/material";
+import { AuthContext } from "@/provider/AuthProvider";
 
 interface Props {
     children: ReactElement
@@ -12,6 +14,9 @@ interface Props {
  
 
 const DefaultLayout: FC<Props> = ({ children }) => {
+    const { logout, username } = useContext(AuthContext);
+
+
     return (  
         <>
             <Head>
@@ -28,6 +33,28 @@ const DefaultLayout: FC<Props> = ({ children }) => {
                         전환 컨테이너
                         </Typography>
                     </Link>
+                    <Box sx={{ flexGrow: 1 }}></Box>
+                    {
+                        username
+                        &&
+                        <>
+                        <Button 
+                            color="inherit"
+                            onClick={() => {
+                            }}    
+                        >
+                            {username}
+                        </Button>
+                        <Button 
+                            color="inherit"
+                            onClick={() => {
+                                logout();
+                            }}    
+                        >
+                            로그아웃
+                        </Button>
+                        </>
+                    }
                 </Toolbar>
             </AppBar>
 
