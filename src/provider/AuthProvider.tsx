@@ -24,8 +24,10 @@ const AuthProvider = ({ children }: Props) => {
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
+        const username = localStorage.getItem("username");
         accessToken && setAccessToken(accessToken);
         refreshToken && setRefreshToken(refreshToken);
+        username && setUsername(username);
 
         return () => {
             
@@ -46,10 +48,14 @@ const AuthProvider = ({ children }: Props) => {
                 setRefreshToken(token);
                 localStorage.setItem("refreshToken", token);
             },
-            setUsername,
+            setUsername: (name: string) => {
+                setUsername(name);
+                localStorage.setItem("username", name);
+            },
             logout: () => {
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken");
+                localStorage.removeItem("username");
                 setAccessToken("");
                 setRefreshToken("");
                 setUsername("");
