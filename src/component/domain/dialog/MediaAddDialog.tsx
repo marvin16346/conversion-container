@@ -6,6 +6,8 @@ import SyntaxEditor from "../../common/SyntaxEditor";
 import { useRouter } from "next/router";
 import defaultAxios from "@/axios/axios";
 import PlatformOption from "../unit/PlatformOption";
+import { mutate } from 'swr';
+
 
 type Props = {
     domain: string,
@@ -70,12 +72,12 @@ const MediaAddDialog = ({ domain, open, onClose }: Props) => {
                             `/containers/${domain}/mediums`, 
                             {
                                 platform_name: selectedPlatform,
-                                base_code : document.getElementById("media-editor-code-input")!.value,
+                                base_code : document.getElementById("media-editor-code-input")!.innerText,
                                 tracking_list: trackingList,
-                                is_using: true,
                             }    
                         )
                         if (res.status == 200 || res.status == 201) {
+                            mutate(`/containers/${domain}/mediums`);
                             onClose();
                         }
                     }}

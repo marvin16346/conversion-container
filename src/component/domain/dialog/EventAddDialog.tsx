@@ -2,7 +2,8 @@ import SyntaxEditor from "@/component/common/SyntaxEditor";
 import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, Button, DialogActions, FormControl, FormLabel, FormHelperText, FormGroup } from "@mui/material";
 import { Event } from "@/data/event";
 import defaultAxios from "@/axios/axios";
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
+
 
 type Props = {
     domain: string,
@@ -89,10 +90,11 @@ const EventAddDialog = ({ domain, open, onClose }: Props) => {
                             {
                                 name: document.getElementById(nameId)!.value,
                                 url_reg: document.getElementById(urlId)!.value,
-                                func_code: document.getElementById(funcId)!.value,
+                                func_code: document.getElementById(funcId)!.innerText,
                             }
                         );
                         if (res.status == 200 || res.status == 201) {
+                            mutate(`/containers/${domain}/events`);
                             onClose();
                         }
                     }}

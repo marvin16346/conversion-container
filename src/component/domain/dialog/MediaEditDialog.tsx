@@ -74,7 +74,7 @@ const MediaEditDialog = ({ domain, platform, open, onClose }: Props) => {
                         const res = await defaultAxios.put(
                             `/containers/${domain}/mediums/${platform}`, 
                             {
-                                base_code : document.getElementById("media-editor-code-input")!.value,
+                                base_code : document.getElementById("media-editor-code-input")!.innerText,
                                 tracking_list: trackingList
                             }    
                         )

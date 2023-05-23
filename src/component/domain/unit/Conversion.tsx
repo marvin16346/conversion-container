@@ -58,10 +58,19 @@ const Conversion = () => {
                     />
                 </Grid>
                 <Grid item xs={6}>
-                    <SyntaxEditor
-                        keyString="conversion-editor"
-                        text={new String(conversion.script!)}
-                    />
+                    {
+                        error && error.response.status == 404
+                        ?
+                        <SyntaxEditor
+                            keyString="conversion-editor"
+                            text={new String("")}
+                        />
+                        :
+                        <SyntaxEditor
+                            keyString="conversion-editor"
+                            text={new String(conversion.script!)}
+                        />
+                    }
                 </Grid>
 
             </Grid>
@@ -80,7 +89,7 @@ const Conversion = () => {
                                 `/containers/${domain}/tags/${conversion.name}`,
                                 {
                                     name: document.getElementById("trigger-key")!.value,
-                                    script: document.getElementById("conversion-editor-code-input")!.value,
+                                    script: document.getElementById("conversion-editor-code-input")!.innerText,
                                 }
                             );
                             if (res.status == 200) {

@@ -96,7 +96,7 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                             {
                                 name: document.getElementById(nameId)!.value,
                                 url_reg: document.getElementById(urlId)!.value,
-                                func_code: document.getElementById(funcId)!.value,
+                                func_code: document.getElementById(funcId)!.innerText,
                             }
                         );
                         if (res.status == 200) {
