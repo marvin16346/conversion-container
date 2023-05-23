@@ -108,19 +108,6 @@ const Media = ({ domain }: Props) => {
                                                     media
                                                 ))
                                             );
-                                            // mutate(
-                                            //     `/containers${domain}/mediums`,
-                                                // medias.map((media) => (
-                                                //     media.platform_name == elem.platform_name
-                                                //     ?
-                                                //      {
-                                                //         ...media,
-                                                //         is_using: !media.is_using
-                                                //     }
-                                                //     :
-                                                //     media
-                                                // ))
-                                            // );
                                         }
                                     }}
                                     >

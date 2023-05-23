@@ -50,7 +50,7 @@ const ContainerPanel = () => {
                     }
                 >
                     <ListItemButton>
-                        <Link href={`/containers/${elem.domain}`}>{elem.domain}</Link> 
+                        <Link href={`/container/${elem.domain}`}>{elem.domain}</Link> 
                         {/* {elem.domain} */}
                     </ListItemButton>
                 </ListItem>
