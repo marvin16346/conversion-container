@@ -14,9 +14,6 @@ defaultAxios.interceptors.request.use((config) => {
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;    
     }
-    if (refreshToken) {
-        config.headers.Authorization += ` ${refreshToken}`;
-    }
     return config;
 }, (err) => {
     return Promise.reject(err);
