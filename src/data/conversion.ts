@@ -26,9 +26,16 @@ type Props = {
     media: string    
 }
 
+const emptyConversion = {
+    name: "",
+    script: ""
+};
+
 export function useConversion({ domain, event, media } : Props) {
-    const { data, error, isLoading, mutate }: Swr = useSWR(`/containers/${domain}/tags?platform_name=${media}&event_name=${event}`);
-    
+    const { data, error, isLoading, mutate }: Swr = useSWR(
+        `/containers/${domain}/tags?platform_name=${media}&event_name=${event}`,
+    );
+
     return {
         conversion: data || makeConversion(),
         isLoading,
@@ -38,8 +45,5 @@ export function useConversion({ domain, event, media } : Props) {
 }
 
 export function makeConversion(): Conversion {
-    return {
-        name: "",
-        script: ""
-    }
+    return emptyConversion;
 }

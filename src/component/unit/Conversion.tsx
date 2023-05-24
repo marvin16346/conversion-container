@@ -18,14 +18,22 @@ const Conversion = () => {
     });
     const [triggerKey, setTriggerKey] = useState<string>("");
 
+    console.log('re render', conversion)    
+    console.log('trigger key', triggerKey)
+
+    /*
+     fix: 404여서 makeConversion()을 리턴하면 conversion은 다른 객체
+     404가 아니면 data 리턴 값이 같아서 useEffect 발동 X
+     */
     useEffect(() => {
-        conversion.name && setTriggerKey(conversion.name);
-            
+        console.log(conversion);
+        setTriggerKey(conversion.name);
+        
         return () => {
         }
     }, [conversion]);
 
-    
+
     return (
         isLoading
         ?
@@ -58,19 +66,10 @@ const Conversion = () => {
                     />
                 </Grid>
                 <Grid item xs={6}>
-                    {
-                        error && error.response.status == 404
-                        ?
-                        <SyntaxEditor
-                            keyString="conversion-editor"
-                            text={new String("")}
-                        />
-                        :
-                        <SyntaxEditor
-                            keyString="conversion-editor"
-                            text={new String(conversion.script!)}
-                        />
-                    }
+                    <SyntaxEditor
+                        keyString="conversion-editor"
+                        text={new String(conversion.script)} // new String(script)
+                    />
                 </Grid>
 
             </Grid>
@@ -85,8 +84,8 @@ const Conversion = () => {
                     variant="contained"
                     onClick={
                         async () => {
-                            const res = await defaultAxios.put(
-                                `/containers/${domain}/tags/${conversion.name}`,
+                            const res = await defaultAxios.post(
+                                `/containers/${domain}/tags?platform_name=${makingConversion.media?.platform_name}&event_name=${makingConversion.event?.name}`,
                                 {
                                     name: document.getElementById("trigger-key")!.value,
                                     script: document.getElementById("conversion-editor-code-input")!.innerText,

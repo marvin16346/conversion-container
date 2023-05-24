@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography'
 import { Box } from '@mui/material'
-import ContainerPanel from '@/component/domain/panel/ContainerPanel'; 
+import ContainerPanel from '@/component/panel/ContainerPanel'; 
 
 export default function Home() {
 

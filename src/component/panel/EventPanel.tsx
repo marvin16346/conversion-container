@@ -1,5 +1,5 @@
 import { Grid, Stack, Typography, IconButton, Divider } from "@mui/material";
-import Event from "@/component/domain/unit/Event";
+import Event from "@/component/unit/Event";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useState } from "react";
 import { useRouter } from "next/router";

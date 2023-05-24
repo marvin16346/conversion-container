@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { MakingConversionContext } from "@/provider/ConversionProvider"
 import { Box, Button, Container, Grid, Typography, TextField } from '@mui/material';
-import Conversion from './unit/Conversion';
+import Conversion from '../unit/Conversion';
 
 
-const MakingConversion = () => {
+const ConversionPanel = () => {
     const { makingConversion, isAllSet } = useContext(MakingConversionContext);
 
     return ( 
@@ -36,5 +36,5 @@ const MakingConversion = () => {
     );
 }
  
-export default MakingConversion;
+export default ConversionPanel;
 

@@ -11,7 +11,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <SWRConfig
       value={{
         // fetcher: (resource, init) => fetch(resource, init).then(res => res.json())
-        fetcher: url => defaultAxios.get(url).then(res => res.data)
+        fetcher: url => defaultAxios.get(url).then(res => res.data),
+        revalidateOnFocus: false,
+        shouldRetryOnError: false,
       }}
     >
       <AuthProvider>

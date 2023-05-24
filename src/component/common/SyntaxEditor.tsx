@@ -17,7 +17,7 @@ const SyntaxEditor = ({ text, keyString }: Props) => {
     useEffect(() => {
         text && setCode(text.valueOf());
         return () => {
-        }
+        }   
     }, [text]);
     
 
@@ -29,8 +29,7 @@ const SyntaxEditor = ({ text, keyString }: Props) => {
             highlight={code => highlight(code, languages.js)}
             padding={10}
             style={{
-                fontFamily: '"Fira code", "Fira Mono", monospace',
-                fontSize: 12,
+                border: "1px solid rgba(0, 0, 0, 0.23)",
             }}
         />
      );

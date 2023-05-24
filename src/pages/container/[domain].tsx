@@ -2,11 +2,11 @@ import { useRouter } from "next/router";
 import Typography from '@mui/material/Typography'
 import { Box, Divider, Grid, IconButton, Stack, Button } from "@mui/material";
 import ConversionProvider from "@/provider/ConversionProvider";
-import MakingConversion from "@/component/domain/MakingConversion";
-import MediaPanel from '@/component/domain/panel/MediaPanel';
-import EventPanel from '@/component/domain/panel/EventPanel';
+import MediaPanel from '@/component/panel/MediaPanel';
+import EventPanel from '@/component/panel/EventPanel';
 import { useState } from "react";
-import DeployDialog from "@/component/domain/dialog/DeployDialog";
+import DeployDialog from "@/component/dialog/DeployDialog";
+import ConversionPanel from "@/component/panel/ConversionPanel";
 
 const TagManager = () => {
     const [open, setOpen] = useState<boolean>(false);
@@ -58,7 +58,7 @@ const TagManager = () => {
                         <EventPanel/>
                     </Grid>
 
-                    <MakingConversion/>
+                    <ConversionPanel/>
 
                     {/* <AllConversion/> */}
                 </Stack>

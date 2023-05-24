@@ -1,47 +1,49 @@
 import {  Box, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemButton, ListItemText, TextareaAutosize, Typography, Button, Stack, TextField } from "@mui/material";
-import TrackingId from "@/component/domain/unit/TrackingId";
-import { Media } from "@/data/media";
-import { useState } from "react";
-import SyntaxEditor from "../../common/SyntaxEditor";
-import { useRouter } from "next/router";
+import TrackingId from "@/component/unit/TrackingId";
+import { Media, MediaDetail } from "@/data/media";
+import { useEffect, useState } from "react";
+import SyntaxEditor from "@/component/common/SyntaxEditor";
 import defaultAxios from "@/axios/axios";
-import PlatformOption from "../unit/PlatformOption";
-import { mutate } from 'swr';
+import useSWR, {mutate} from 'swr';
 
 
 type Props = {
     domain: string,
+    platform: string,
     open: boolean,
     onClose: Function,
 }
 
-const MediaAddDialog = ({ domain, open, onClose }: Props) => {
+const MediaEditDialog = ({ domain, platform, open, onClose }: Props) => {
     const [trackingList, setTrackingList] = useState<Array<string>>([]);
-    const [selectedPlatform, setSelectedPlatform] = useState<string>("");
+    const { data: mediaDetail }: {data: MediaDetail | undefined} = useSWR(`/containers/${domain}/mediums/${platform}`);
+
+    useEffect(() => {
+      mediaDetail && setTrackingList(mediaDetail.tracking_list);
+      return () => {
+      }
+    }, [mediaDetail]);
+    
 
     return ( 
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
                 <Typography variant="h4">
-                    매체 추가
+                    {platform} 설정
                 </Typography>
             </DialogTitle>
 
+            {
+            mediaDetail
+            &&
             <DialogContent>
                 <Stack spacing={8}>
-                    <Box>
-                        <PlatformOption
-                            domain={domain}
-                            onSelect={setSelectedPlatform}
-                        />
-                    </Box>
-
                     <Box>
                         <Typography variant="h5">
                             공통 유틸리티 스크립트
                         </Typography>
                         <SyntaxEditor
-                            text={""}
+                            text={mediaDetail.base_code}
                             keyString="media-editor"
                         />
                     </Box>
@@ -50,13 +52,15 @@ const MediaAddDialog = ({ domain, open, onClose }: Props) => {
                         <Typography variant="h5">
                             트래킹 ID 리스트
                         </Typography>
-                        <TrackingId
-                            trackingList={trackingList} 
+                        <TrackingId 
+                            trackingList={trackingList}
                             setTrackingList={setTrackingList}
                         />
                     </Box>
                 </Stack>
             </DialogContent>
+            }
+
             <DialogActions>
                 <Button 
                     variant="contained"
@@ -67,17 +71,17 @@ const MediaAddDialog = ({ domain, open, onClose }: Props) => {
                 <Button 
                     variant="contained"
                     onClick={async () => {
-                        if (!selectedPlatform) return;
-                        const res = await defaultAxios.post(
-                            `/containers/${domain}/mediums`, 
+                        const res = await defaultAxios.put(
+                            `/containers/${domain}/mediums/${platform}`, 
                             {
-                                platform_name: selectedPlatform,
                                 base_code : document.getElementById("media-editor-code-input")!.innerText,
-                                tracking_list: trackingList,
+                                tracking_list: trackingList
                             }    
                         )
-                        if (res.status == 200 || res.status == 201) {
-                            mutate(`/containers/${domain}/mediums`);
+                        if (res.status == 200) {
+                            mutate(
+                                `/containers/${domain}/mediums/${platform}`, 
+                            );
                             onClose();
                         }
                     }}
@@ -89,4 +93,4 @@ const MediaAddDialog = ({ domain, open, onClose }: Props) => {
      );
 }
  
-export default MediaAddDialog;
+export default MediaEditDialog;
