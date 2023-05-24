@@ -17,6 +17,7 @@ const Conversion = () => {
         event: makingConversion.event!.name
     });
     const [triggerKey, setTriggerKey] = useState<string>("");
+    const [script, setScript] = useState<string>("");
 
     console.log('re render', conversion)    
     console.log('trigger key', triggerKey)
@@ -26,13 +27,25 @@ const Conversion = () => {
      404가 아니면 data 리턴 값이 같아서 useEffect 발동 X
      */
     useEffect(() => {
-        console.log(conversion);
-        setTriggerKey(conversion.name);
-        
+        console.log('conversion change');
+        conversion.name && setTriggerKey(conversion.name);
+        conversion.script && setScript(conversion.script);
         return () => {
         }
     }, [conversion]);
 
+
+    useEffect(() => {
+        console.log('error', error);
+        if (error) {
+            setTriggerKey("");
+            setScript("");
+        }
+
+      return () => {
+      }
+    }, [error]);
+    
 
     return (
         isLoading
@@ -68,7 +81,8 @@ const Conversion = () => {
                 <Grid item xs={6}>
                     <SyntaxEditor
                         keyString="conversion-editor"
-                        text={new String(conversion.script)} // new String(script)
+                        text={new String(script)} // new String(script)
+                        onChange={(val: string) => setScript(val)}
                     />
                 </Grid>
 

@@ -8,10 +8,11 @@ import 'prismjs/themes/prism-tomorrow.css';
 
 type Props = {
     text?: String,
+    onChange?: Function,
     keyString: string
 }
 
-const SyntaxEditor = ({ text, keyString }: Props) => {
+const SyntaxEditor = ({ text, onChange, keyString }: Props) => {
     const [code, setCode] = useState<string>('');
 
     useEffect(() => {
@@ -25,7 +26,10 @@ const SyntaxEditor = ({ text, keyString }: Props) => {
         <Editor
             id={`${keyString}-code-input`}
             value={code}
-            onValueChange={code => setCode(code)}
+            onValueChange={code => {
+                setCode(code);
+                onChange && onChange(code);
+            }}
             highlight={code => highlight(code, languages.js)}
             padding={10}
             style={{
