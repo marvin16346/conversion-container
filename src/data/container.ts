@@ -14,7 +14,6 @@ type Swr = {
 
 export function useContainer() {
     const { data, error, isLoading }: Swr = useSWR("/containers");
-    // const { data, error, isLoading }: Swr = useSWR("/container");
     
     return {
         containers: data || [],

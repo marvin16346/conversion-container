@@ -1,5 +1,3 @@
-import defaultAxios from "@/axios/axios";
-import { Conversion } from "@/data/conversion";
 import { Event } from "@/data/event";
 import { Media } from "@/data/media";
 import { ReactElement, useState } from "react";
@@ -10,18 +8,9 @@ type Props = {
 };
 
 
-// type AllConversion = {
-//     allConversion: Conversion[],
-//     pushToAllConversion: (elem: MemoryConversion) => void,
-//     removeInAllConversion: (elem: Conversion) => void,
-//     setAllConversion: (conversions: Conversion[]) => void,
-// }
-
 export type MemoryConversion = {
     media: Media | null,
     event: Event | null,
-    // triggerKey: string | null,
-    // executionCode: string | null,
 }
 
 type MakingConversion = {
@@ -35,29 +24,18 @@ export const MakingConversionContext =  createContext<MakingConversion>({
     makingConversion: {
         media: null,
         event: null,
-        // triggerKey: null,
-        // executionCode: null,
     },
     setMedia: (elem: Media) => {},
     setEvent: (elem: Event) => {},
     isAllSet: () => { return false; },
 });
 
-// export const AllConversionContext =  createContext<AllConversion>({
-//     allConversion: [],
-//     pushToAllConversion: (elem: MemoryConversion) => {},
-//     removeInAllConversion: (elem: Conversion) => {},
-//     setAllConversion: (conversions: Conversion[]) => {},
-// });
 
 const ConversionProvider = ({ children }: Props) => {
     const [makingConversion, setMakingConversion] = useState<MemoryConversion>({
         media: null,
         event: null,
-        // triggerKey: null,
-        // executionCode: null,
     });
-    // const [allConversion, setAllConversion] = useState<Conversion[]>([]);
 
 
     return (
@@ -72,23 +50,7 @@ const ConversionProvider = ({ children }: Props) => {
                 return false;
             },
         }}>
-            {/* <AllConversionContext.Provider value={{
-                allConversion,
-                pushToAllConversion: async (elem) => {
-                    const response = await fetch('/conversion', {
-                        method: 'POST',
-                        body: JSON.stringify(elem)
-                    });
-                    const newConversion = await response.json();
-                    setAllConversion(allConversion.concat(newConversion));
-                },
-                removeInAllConversion: (elem) => setAllConversion(
-                    allConversion.filter(elem2 => JSON.stringify(elem2) != JSON.stringify(elem))
-                ),
-                setAllConversion
-            }}> */}
-                {children}
-            {/* </AllConversionContext.Provider> */}
+            {children}
         </MakingConversionContext.Provider>    
     );
 };

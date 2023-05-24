@@ -19,15 +19,11 @@ const Conversion = () => {
     const [triggerKey, setTriggerKey] = useState<string>("");
     const [script, setScript] = useState<string>("");
 
-    console.log('re render', conversion)    
-    console.log('trigger key', triggerKey)
-
     /*
      fix: 404여서 makeConversion()을 리턴하면 conversion은 다른 객체
      404가 아니면 data 리턴 값이 같아서 useEffect 발동 X
      */
     useEffect(() => {
-        console.log('conversion change');
         conversion.name && setTriggerKey(conversion.name);
         conversion.script && setScript(conversion.script);
         return () => {
@@ -36,7 +32,6 @@ const Conversion = () => {
 
 
     useEffect(() => {
-        console.log('error', error);
         if (error) {
             setTriggerKey("");
             setScript("");
