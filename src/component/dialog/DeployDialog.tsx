@@ -1,6 +1,7 @@
 import defaultAxios from "@/axios/axios";
-import { Box, Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import { Box, Dialog, DialogContent, DialogTitle, Typography, Button } from "@mui/material";
 import { useEffect, useState } from "react";
+import SyntaxEditor from "../common/SyntaxEditor";
 
 type Props = {
     domain: string,
@@ -14,10 +15,11 @@ const DeployDialog = ({ domain, open, onClose }: Props) => {
     useEffect(() => {
         async function getScript() {
             const res = await defaultAxios.get(
-                `/containers/${domain}/scripts`
+                `/containers/${domain}/script`
             );
-            if (res.status == 200) {
-                setScript(res.data.code);
+            console.log(res);
+            if (res.status && res.status == 200) {
+                setScript(res.data.common_script);
             }
         }
         if (open) {
@@ -33,7 +35,7 @@ const DeployDialog = ({ domain, open, onClose }: Props) => {
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
                 <Typography variant="h5">
-                    아래 내용을 head 사이에 붙여넣으세요
+                    아래 내용을 head 태그 끝에 붙여넣으세요
                 </Typography>
             </DialogTitle>
 
@@ -43,7 +45,25 @@ const DeployDialog = ({ domain, open, onClose }: Props) => {
                 }}
             >
                 <Box>
-                    {script}
+                    <SyntaxEditor
+                        keyString="deploy"
+                        text={script}
+                        disabled
+                    />
+                    <Button 
+                        variant="outlined"
+                        onClick={() => {
+                            navigator.clipboard.writeText(script)
+                                .then(() => {
+                                    alert("복사했습니다. ctrl + v로 붙여넣으세요");
+                                })
+                                .catch((err) => {
+                                    alert("복사에 실패했습니다");
+                                });
+                        }}    
+                    >
+                      복사하기
+                    </Button>
                 </Box>
             </DialogContent>
         </Dialog>

@@ -22,17 +22,15 @@ defaultAxios.interceptors.response.use((response) => {
     return response;
 }, (err) => {
     console.log(err)
-    if (err.response.status === 401) {
+    if (err.response && err.response.status === 401) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("username");
-        /* AuthProvider에 저장된 정보 제거 */
-        // setAccessToken("");
-        // setRefreshToken("");
-        // setUsername("");
         /* 로그인 화면으로 이동 */
         window.location.href = "/";
+        return;
     }
+    return err;
 })
 
 export default defaultAxios;

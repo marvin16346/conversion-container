@@ -9,10 +9,11 @@ import 'prismjs/themes/prism-tomorrow.css';
 type Props = {
     text?: String,
     onChange?: Function,
-    keyString: string
+    keyString: string,
+    disabled?: boolean
 }
 
-const SyntaxEditor = ({ text, onChange, keyString }: Props) => {
+const SyntaxEditor = ({ text, onChange, keyString, disabled }: Props) => {
     const [code, setCode] = useState<string>('');
 
     useEffect(() => {
@@ -37,6 +38,8 @@ const SyntaxEditor = ({ text, onChange, keyString }: Props) => {
                 borderColor: code.trim() ?  "rgba(0, 0, 0, 0.23)" : "red",
             }}
             placeholder="입력해주세요"  
+            disabled={disabled}
+            // readonly
         />
      );
 }
