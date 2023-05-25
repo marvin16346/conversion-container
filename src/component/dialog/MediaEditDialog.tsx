@@ -79,9 +79,9 @@ const MediaEditDialog = ({ domain, platform, open, onClose }: Props) => {
                             }    
                         )
                         if (res.status == 200) {
-                            mutate(
-                                `/containers/${domain}/mediums/${platform}`, 
-                            );
+                            // mutate(
+                            //     `/containers/${domain}/mediums`, 
+                            // );
                             onClose();
                         }
                     }}

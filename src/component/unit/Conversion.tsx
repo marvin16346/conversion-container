@@ -70,6 +70,7 @@ const Conversion = () => {
                             width: "100%"
                         }}
                         value={triggerKey}
+                        error={!triggerKey.trim()}
                         onChange={(evt) => setTriggerKey(evt.target.value)}
                     />
                 </Grid>

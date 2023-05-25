@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, 
 import { Event, EventDetail } from "@/data/event";
 import defaultAxios from "@/axios/axios";
 import useSWR, { mutate } from 'swr';
+import { useState, useEffect } from "react";
 
 type Props = {
     domain: string,
@@ -17,6 +18,18 @@ const urlId = "event-url-text";
 
 const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
     const { data: eventDetail }: {data: EventDetail | undefined} = useSWR(`/containers/${domain}/events/${event}`);
+
+    const [name, setName] = useState<string>("");
+    const [url, setUrl] = useState<string>("");
+    
+    useEffect(() => {
+        eventDetail && setName(eventDetail?.name);
+        eventDetail && setUrl(eventDetail?.url_reg);
+    
+      return () => {
+      }
+    }, [eventDetail]);
+    
 
     return ( 
         <Dialog onClose={onClose} open={open}>
@@ -49,7 +62,10 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                                 sx={{
                                     flexGrow: 1
                                 }}
-                                defaultValue={eventDetail.name}
+                                placeholder="입력해주세요"
+                                error={!name.trim()}
+                                value={name}
+                                onChange={(evt) => setName(evt.target.value)}
                             />
                         </FormGroup>
 
@@ -72,7 +88,10 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                                 sx={{
                                     flexGrow: 1
                                 }}
-                                defaultValue={eventDetail.url_reg}
+                                placeholder="입력해주세요"
+                                error={!url.trim()}
+                                value={url}
+                                onChange={(evt) => setUrl(evt.target.value)}
                             />
                         </FormGroup>
                     </Stack>
@@ -94,14 +113,14 @@ const EventEditDialog = ({ domain, event, open, onClose }: Props) => {
                         const res = await defaultAxios.put(
                             `/containers/${domain}/events/${event}`, 
                             {
-                                name: document.getElementById(nameId)!.value,
-                                url_reg: document.getElementById(urlId)!.value,
+                                name: name,
+                                url_reg: url,
                                 func_code: document.getElementById(funcId)!.innerText,
                             }
                         );
                         if (res.status == 200) {
                             mutate(
-                                `/containers/${domain}/events/${document.getElementById(nameId)!.value}`, 
+                                `/containers/${domain}/events`, 
                             );
                             onClose();
                         }

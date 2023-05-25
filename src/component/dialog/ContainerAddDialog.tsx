@@ -1,6 +1,6 @@
 import defaultAxios from "@/axios/axios";
-import SyntaxEditor from "@/component/common/SyntaxEditor";
 import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, DialogActions, Button, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const domainId = "container-domain-text"
 const descId = "container-desc-text"
@@ -11,12 +11,22 @@ type Props = {
 }
 
 const ContainerAddDialog = ({ open, onClose }: Props) => {
+    const [domain, setDomain] = useState<string>("");
+    const [desc, setDesc] = useState<string>("");
+
+    useEffect(() => {
+        
+        return () => {
+        }
+    }, []);
+    
+
     return ( 
         <Dialog onClose={onClose} open={open}>
             <DialogTitle>
-                <Typography variant="h4">
+                {/* <Typography variant="h4"> */}
                     컨테이너 생성
-                </Typography>
+                {/* </Typography> */}
             </DialogTitle>
 
             <DialogContent>
@@ -30,6 +40,10 @@ const ContainerAddDialog = ({ open, onClose }: Props) => {
                             sx={{
                                 flexGrow: 1
                             }}
+                            placeholder="입력해주세요"
+                            error={!domain.trim()}
+                            value={domain}
+                            onChange={(evt) => setDomain(evt.target.value)}
                         />
                     </Box>
 
@@ -42,6 +56,10 @@ const ContainerAddDialog = ({ open, onClose }: Props) => {
                             sx={{
                                 flexGrow: 1
                             }}
+                            placeholder="입력해주세요"
+                            error={!desc.trim()}
+                            value={desc}
+                            onChange={(evt) => setDesc(evt.target.value)}
                         />
                     </Box>
                 </Stack>
@@ -59,8 +77,8 @@ const ContainerAddDialog = ({ open, onClose }: Props) => {
                         const res = await defaultAxios.post(
                             `/containers`, 
                             {
-                                domain : document.getElementById(domainId)!.value,
-                                description: document.getElementById(descId)!.value
+                                domain : domain,
+                                description: desc
                             }    
                         )
                         if (res.status == 200 || res.status == 201) {

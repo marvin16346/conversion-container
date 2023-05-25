@@ -3,6 +3,7 @@ import { Dialog, DialogTitle, Typography, DialogContent, Stack, Box, TextField, 
 import { Event } from "@/data/event";
 import defaultAxios from "@/axios/axios";
 import useSWR, { mutate } from 'swr';
+import { useState } from "react";
 
 
 type Props = {
@@ -16,6 +17,9 @@ const funcId = "event-editor-code-input";
 const urlId = "event-url-text";
 
 const EventAddDialog = ({ domain, open, onClose }: Props) => {
+
+    const [name, setName] = useState<string>("");
+    const [url, setUrl] = useState<string>("");
 
     return ( 
         <Dialog onClose={onClose} open={open}>
@@ -45,6 +49,10 @@ const EventAddDialog = ({ domain, open, onClose }: Props) => {
                                 sx={{
                                     flexGrow: 1
                                 }}
+                                error={!name.trim()}
+                                placeholder="입력해주세요"
+                                value={name}
+                                onChange={(evt) => setName(evt.target.value)}
                             />
                         </FormGroup>
 
@@ -67,7 +75,10 @@ const EventAddDialog = ({ domain, open, onClose }: Props) => {
                                 sx={{
                                     flexGrow: 1
                                 }}
-                                onChange={() => {}}
+                                error={!url.trim()}
+                                placeholder="입력해주세요"
+                                value={url}
+                                onChange={(evt) => setUrl(evt.target.value)}
                             />
                         </FormGroup>
                     </Stack>
@@ -88,8 +99,8 @@ const EventAddDialog = ({ domain, open, onClose }: Props) => {
                         const res = await defaultAxios.post(
                             `/containers/${domain}/events`, 
                             {
-                                name: document.getElementById(nameId)!.value,
-                                url_reg: document.getElementById(urlId)!.value,
+                                name: name,
+                                url_reg: url,
                                 func_code: document.getElementById(funcId)!.innerText,
                             }
                         );

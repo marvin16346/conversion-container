@@ -33,8 +33,10 @@ const SyntaxEditor = ({ text, onChange, keyString }: Props) => {
             highlight={code => highlight(code, languages.js)}
             padding={10}
             style={{
-                border: "1px solid rgba(0, 0, 0, 0.23)",
+                border: "1px solid",
+                borderColor: code.trim() ?  "rgba(0, 0, 0, 0.23)" : "red",
             }}
+            placeholder="입력해주세요"  
         />
      );
 }
