@@ -11,16 +11,12 @@ export default function handler(
   if (req.method == "GET") {
     res.status(200).json([
       { 
-        name: 'naver', 
-        using: true, 
-        commonScript: '',
-        trackingList: ['abc345asdf', 'serf234fa'],
+        platform_name: 'naver', 
+        is_using: true, 
       },
       { 
-        name: 'kakao', 
-        using: false, 
-        commonScript: '<script src="//t1.daumcdn.net/adfit/static/kp.js"></script>',
-        trackingList: ['her12ffdw', 'va59glwer']
+        platform_name: 'kakao', 
+        is_using: false, 
       }
     ]);
   } else if (req.method == "PUT") {

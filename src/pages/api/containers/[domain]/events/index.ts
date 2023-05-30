@@ -1,12 +1,19 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Version } from '@/data/version';
+import { Event } from '@/data/event';
 
-type Data = Array<Version>
+type Data = Array<Event>
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json([{ name: 'v1' }, { name: 'v2' }]);
+    res.status(200).json([
+        { 
+            name: '장바구니 보기',
+        }, 
+        { 
+            name: '페이지뷰',
+        }
+    ]);
 }

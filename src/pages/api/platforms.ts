@@ -1,6 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { TrackingId } from '@/data/trackingId';
 import { Platform } from '@/data/platform';
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = Array<Platform> | {}
 
@@ -9,14 +8,11 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
     res.status(200).json([
-        {
-            name: "kakao"
-        },
-        {
-            name: "naver",
-        },
-        {
-            name: "meta"
-        }
+      {
+        name: "meta" 
+      },
+      {
+        name: "adobe" 
+      },
     ]);
 }

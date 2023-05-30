@@ -1,13 +1,14 @@
 import { useContainer } from '@/data/container'
 import { IconButton, ListItem, ListItemButton, Stack, Typography } from '@mui/material'
 import FetchList from '@/component/common/FetchList';
-import { useRouter } from 'next/router';
 import ContainerAddDialog from '../dialog/ContainerAddDialog';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from 'react';
 import defaultAxios from '@/axios/axios';
 import Link from 'next/link';
+import { mutate } from 'swr';
+
 
 const ContainerPanel = () => {
     const { containers, error, isLoading }  = useContainer();
@@ -43,7 +44,10 @@ const ContainerPanel = () => {
                                 onClick={async () => {
                                     const res = await defaultAxios.delete(
                                         `/containers/${elem.domain}`
-                                    )
+                                    );
+                                    if (res.status == 200) {
+                                        mutate(`/containers`);
+                                    }
                                 }}
                             />
                         </IconButton>

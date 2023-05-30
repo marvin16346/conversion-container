@@ -17,7 +17,6 @@ const DeployDialog = ({ domain, open, onClose }: Props) => {
             const res = await defaultAxios.get(
                 `/containers/${domain}/script`
             );
-            console.log(res);
             if (res.status && res.status == 200) {
                 setScript(res.data.common_script);
             }

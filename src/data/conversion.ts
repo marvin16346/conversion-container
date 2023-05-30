@@ -1,12 +1,7 @@
 import useSWR from 'swr';
-// import { Event } from "@/data/event";
-// import { Media } from "@/data/media";
 
 
 export type Conversion = {
-    // id: number | null,
-    // media: Media | null,
-    // event: Event | null,
     name: string | null,
     script: string | null,
 }

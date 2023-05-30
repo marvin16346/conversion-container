@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Container } from '@/data/container';
 
@@ -8,5 +7,11 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json([{ domain: 'samsung.com' }]);
+  res.status(200).json([
+    { 
+        name: 'samsung',
+        domain: 'samsung.com',
+        description: 'samsung',
+    },
+]);
 }

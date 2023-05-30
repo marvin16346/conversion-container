@@ -1,7 +1,9 @@
 import useSWR from 'swr';
 
 export type Container = {
-    domain: string
+    name: string,
+    domain: string,
+    description: string
 }
 
 type Data = Array<Container>
